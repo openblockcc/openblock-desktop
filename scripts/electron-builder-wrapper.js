@@ -109,12 +109,12 @@ const calculateTargets = function (wrapperConfig) {
             name: 'dmg',
             platform: 'darwin'
         },
-        microsoftStore: {
-            name: 'appx',
-            platform: 'win32'
-        },
+        // microsoftStore: {
+        //     name: 'appx',
+        //     platform: 'win32'
+        // },
         windowsDirectDownload: {
-            name: 'nsis:ia32',
+            name: 'nsis',
             platform: 'win32'
         }
     };
@@ -122,7 +122,7 @@ const calculateTargets = function (wrapperConfig) {
     switch (process.platform) {
     case 'win32':
         // Run in two passes so we can skip signing the AppX for distribution through the MS Store.
-        targets.push(availableTargets.microsoftStore);
+        // targets.push(availableTargets.microsoftStore);
         targets.push(availableTargets.windowsDirectDownload);
         break;
     case 'darwin':

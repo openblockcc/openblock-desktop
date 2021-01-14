@@ -11,6 +11,9 @@ import MacOSMenu from './MacOSMenu';
 import log from '../common/log.js';
 import {productName, version} from '../../package.json';
 
+const ScratchHWLink = require('scratchhw-link');
+const ScratchHWExtension = require('scratchhw-extension');
+
 // suppress deprecation warning; this will be the default in Electron 9
 app.allowRendererProcessReuse = true;
 
@@ -293,7 +296,7 @@ const createMainWindow = () => {
     webContents.on('will-prevent-unload', ev => {
         const choice = dialog.showMessageBoxSync(window, {
             type: 'question',
-            message: 'Leave Scratch?',
+            message: 'Leave Openblock?',
             detail: 'Any unsaved changes will be lost.',
             buttons: ['Stay', 'Leave'],
             cancelId: 0, // closing the dialog means "stay"
@@ -361,6 +364,36 @@ app.on('ready', () => {
             }
         });
     }
+
+    const userDataPath = app.getPath(
+        'userData'
+    );
+    const appPath = app.getAppPath();
+
+    let toolsPath;
+    if (appPath.search(/app/g) !== -1) {
+        toolsPath = path.join(appPath, '../tools');
+    // eslint-disable-next-line no-negated-condition
+    } else if (appPath.search(/main/g) !== -1) {
+        console.log('appPath=', appPath);
+        toolsPath = path.join(appPath, '../win-unpacked/resources/tools');
+    } else {
+        toolsPath = path.join(appPath, 'tools');
+    }
+    const link = new ScratchHWLink(path.join(userDataPath, 'Data'), toolsPath);
+    link.listen();
+
+    let extensionsPath;
+    if (appPath.search(/app/g) !== -1) {
+        extensionsPath = path.join(appPath, '../extensions');
+    // eslint-disable-next-line no-negated-condition
+    } else if (appPath.search(/main/g) !== -1) {
+        extensionsPath = path.join(appPath, '../win-unpacked/resources/extensions');
+    } else {
+        extensionsPath = path.join(appPath, 'extensions');
+    }
+    const extension = new ScratchHWExtension(path.join(userDataPath, 'Data'), extensionsPath);
+    extension.listen();
 
     _windows.main = createMainWindow();
     _windows.main.on('closed', () => {

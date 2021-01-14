@@ -1,12 +1,14 @@
 {
-  "name": "scratch-desktop",
-  "productName": "Scratch",
-  "description": "Scratch 3.0 as a self-contained desktop application",
-  "author": "Scratch Foundation",
-  "version": "3.17.1",
+  "name": "scratchhw-desktop",
+  "productName": "Openblock",
+  "description": "Openblock 3.0 as a self-contained desktop application",
+  "author": "Openblock Team",
+  "version": "1.0.0-beta",
   "license": "BSD-3-Clause",
   "scripts": {
-    "clean": "rimraf ./dist ./static/assets",
+    "postinstall": "electron-builder install-app-deps && cpy ./ ../../../extensions --parents --cwd=./node_modules/scratchhw-extension/src",
+    "cpext": "cpy ./ ../../../extensions --parents --cwd=./node_modules/scratchhw-extension/src",
+    "clean": "rimraf ./dist ./static/assets ./extensions ./translations",
     "start": "mkdirp ./dist && electron-webpack dev --bail --display-error-details --env.minify=false --no-progress",
     "compile": "mkdirp ./dist && electron-webpack --bail --display-error-details --env.minify=false --no-progress",
     "fetch": "rimraf ./static/assets/ && mkdirp ./static/assets/ && node ./scripts/fetchMediaLibraryAssets.js",
@@ -22,9 +24,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/LLK/scratch-desktop.git"
+    "url": "git+ssh://git@github.com/ScratchHW/scratchhw-desktop.git"
   },
   "dependencies": {
+    "scratchhw-extension": "0.1.0-prerelease.20210114151218",
+    "scratchhw-link": "0.1.0-prerelease.20210111072835",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
@@ -39,8 +43,9 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-react-intl": "^7.5.7",
     "copy-webpack-plugin": "^5.1.1",
-    "electron": "^8.2.5",
-    "electron-builder": "^22.6.0",
+    "cpy-cli": "^3.1.1",
+    "electron": "^8.5.5",
+    "electron-builder": "^22.9.1",
     "electron-devtools-installer": "^3.0.0",
     "electron-notarize": "^0.3.0",
     "electron-store": "^5.1.1",
@@ -56,6 +61,7 @@
     "minilog": "^3.1.0",
     "minimist": "^1.2.5",
     "mkdirp": "^1.0.4",
+    "monaco-editor-webpack-plugin": "^1.7.0",
     "nets": "^3.2.0",
     "react": "16.2.0",
     "react-dom": "16.2.1",
@@ -63,7 +69,7 @@
     "react-redux": "5.0.7",
     "redux": "3.7.2",
     "rimraf": "^3.0.2",
-    "scratch-gui": "github:LLK/scratch-gui#scratch-desktop-v3.17.1",
+    "scratchhw-gui": "github:ScratchHW/scratchhw-gui#develop",
     "uuid": "^8.0.0",
     "webpack": "^4.43.0"
   },

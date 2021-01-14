@@ -7,6 +7,9 @@ const electronPath = require('electron');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const MONACO_DIR = path.resolve(__dirname, './node_modules/monaco-editor');
+
 // PostCss
 const autoprefixer = require('autoprefixer');
 const postcssVars = require('postcss-simple-vars');
@@ -71,6 +74,7 @@ const makeConfig = function (defaultConfig, options) {
                 },
                 { // coped from scratch-gui
                     test: /\.css$/,
+                    exclude: MONACO_DIR,
                     use: [{
                         loader: 'style-loader'
                     }, {
@@ -101,12 +105,21 @@ const makeConfig = function (defaultConfig, options) {
                     options: {
                         outputPath: 'static/assets/'
                     }
+                },
+                {
+                    test: /\.css$/,
+                    include: MONACO_DIR,
+                    use: ['style-loader', 'css-loader']
                 }
             ]
         },
         plugins: [
             new webpack.SourceMapDevToolPlugin({
                 filename: '[file].map'
+            }),
+            new MonacoWebpackPlugin({
+                languages: ['c', 'cpp', 'python', 'lua', 'javascript'],
+                features: ['!gotoSymbol']
             })
         ].concat(options.plugins || []),
         resolve: {
@@ -115,7 +128,7 @@ const makeConfig = function (defaultConfig, options) {
             alias: {
                 // act like scratch-gui has this line in its package.json:
                 //   "browser": "./src/index.js"
-                'scratch-gui$': path.resolve(__dirname, 'node_modules', 'scratch-gui', 'src', 'index.js')
+                'scratchhw-gui$': path.resolve(__dirname, 'node_modules', 'scratchhw-gui', 'src', 'index.js')
             }
         }
     });
