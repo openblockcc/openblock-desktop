@@ -51,7 +51,7 @@ const runBuilder = function (wrapperConfig, target) {
     if (wrapperConfig.doSign &&
         (target.name.indexOf('nsis') === 0) &&
         !(childEnvironment.CSC_LINK || childEnvironment.WIN_CSC_LINK)) {
-        throw new Error(`Signing NSIS build requires CSC_LINK or WIN_CSC_LINK`);
+        // throw new Error(`Signing NSIS build requires CSC_LINK or WIN_CSC_LINK`);
     }
     const platformFlag = getPlatformFlag();
     let allArgs = [platformFlag, target.name];

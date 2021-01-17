@@ -20,7 +20,7 @@ npm-*
 /*.provisionprofile
 
 # don't store the assets downloaded with the `fetch` script
-/static/assets/
+/statics/assets/
 
 # don't store the tools
 /tools/Arduino

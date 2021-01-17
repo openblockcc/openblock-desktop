@@ -1,34 +1,34 @@
 {
-  "name": "scratchhw-desktop",
+  "name": "openblock-desktop",
   "productName": "Openblock",
   "description": "Openblock 3.0 as a self-contained desktop application",
   "author": "Openblock Team",
   "version": "1.0.0-beta",
   "license": "BSD-3-Clause",
   "scripts": {
-    "postinstall": "electron-builder install-app-deps && cpy ./ ../../../extensions --parents --cwd=./node_modules/scratchhw-extension/src",
-    "cpext": "cpy ./ ../../../extensions --parents --cwd=./node_modules/scratchhw-extension/src",
-    "clean": "rimraf ./dist ./static/assets ./extensions ./translations",
+    "postinstall": "electron-builder install-app-deps && npm run cpext",
+    "cpext": "cpy ./ ../../../extensions --parents --cwd=./node_modules/openblock-extension/src",
+    "clean": "rimraf ./dist ./statics ./extensions ./translations",
     "start": "mkdirp ./dist && electron-webpack dev --bail --display-error-details --env.minify=false --no-progress",
     "compile": "mkdirp ./dist && electron-webpack --bail --display-error-details --env.minify=false --no-progress",
-    "fetch": "rimraf ./static/assets/ && mkdirp ./static/assets/ && node ./scripts/fetchMediaLibraryAssets.js",
+    "fetch": "rimraf ./statics && mkdirp ./statics && git clone https://github.com/openblockcc/openblock-asset.git statics",
     "build": "npm run build:dev",
     "build:dev": "npm run compile && npm run doBuild -- --mode=dev",
     "build:dir": "npm run compile && npm run doBuild -- --mode=dir",
     "build:dist": "npm run compile && npm run doBuild -- --mode=dist",
     "doBuild": "node ./scripts/electron-builder-wrapper.js",
-    "dist": "npm run clean && npm run compile && npm run fetch && npm run doBuild -- --mode=dist",
-    "distDev": "npm run clean && npm run compile && npm run fetch && npm run doBuild -- --mode=dev",
+    "dist": "npm run clean && npm run compile && npm run fetch && npm run cpext && npm run doBuild -- --mode=dist",
+    "distDev": "npm run clean && npm run compile && npm run fetch && npm run cpext && npm run doBuild -- --mode=dev",
     "test": "npm run test:lint",
     "test:lint": "eslint --cache --color --ext .jsx,.js ."
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/ScratchHW/scratchhw-desktop.git"
+    "url": "git+ssh://git@github.com/openblockcc/openblock-desktop.git"
   },
   "dependencies": {
-    "scratchhw-extension": "0.1.0-prerelease.20210114151218",
-    "scratchhw-link": "0.1.0-prerelease.20210111072835",
+    "openblock-extension": "latest",
+    "openblock-link": "latest",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
@@ -69,7 +69,7 @@
     "react-redux": "5.0.7",
     "redux": "3.7.2",
     "rimraf": "^3.0.2",
-    "scratchhw-gui": "github:ScratchHW/scratchhw-gui#develop",
+    "openblock-gui": "github:openblockcc/openblock-gui#desktop",
     "uuid": "^8.0.0",
     "webpack": "^4.43.0"
   },

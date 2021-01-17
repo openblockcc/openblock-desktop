@@ -11,8 +11,8 @@ import MacOSMenu from './MacOSMenu';
 import log from '../common/log.js';
 import {productName, version} from '../../package.json';
 
-const ScratchHWLink = require('scratchhw-link');
-const ScratchHWExtension = require('scratchhw-extension');
+const OpenBlockLink = require('openblock-link');
+const OpenBlockExtension = require('openblock-extension');
 
 // suppress deprecation warning; this will be the default in Electron 9
 app.allowRendererProcessReuse = true;
@@ -380,7 +380,7 @@ app.on('ready', () => {
     } else {
         toolsPath = path.join(appPath, 'tools');
     }
-    const link = new ScratchHWLink(path.join(userDataPath, 'Data'), toolsPath);
+    const link = new OpenBlockLink(path.join(userDataPath, 'Data'), toolsPath);
     link.listen();
 
     let extensionsPath;
@@ -392,7 +392,7 @@ app.on('ready', () => {
     } else {
         extensionsPath = path.join(appPath, 'extensions');
     }
-    const extension = new ScratchHWExtension(path.join(userDataPath, 'Data'), extensionsPath);
+    const extension = new OpenBlockExtension(path.join(userDataPath, 'Data'), extensionsPath);
     extension.listen();
 
     _windows.main = createMainWindow();

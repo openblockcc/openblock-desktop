@@ -1,7 +1,7 @@
 directories:
   buildResources: buildResources
   output: dist
-extraResources: ["tools", "extensions"]
+extraResources: ["tools", "extensions", "statics"]
 
 appId: openblock.cc.openblock-desktop
 productName: "Openblock"
@@ -45,5 +45,6 @@ win:
 #   publisher: "CN=2EC43DF1-469A-4119-9AB9-568A0A1FF65F"
 #   artifactName: "Openblock ${version}.${ext}"
 nsis:
-  oneClick: true # allow user to choose per-user or per-machine
+  oneClick: false # allow user to choose per-user or per-machine
+  allowToChangeInstallationDirectory: true
   artifactName: "Openblock ${version} Setup.${ext}"

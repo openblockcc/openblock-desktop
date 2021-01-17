@@ -6,10 +6,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import GUI from 'scratchhw-gui/src/index';
-import VM from 'scratchhw-vm';
+import GUI from 'openblock-gui/src/index';
+import VM from 'openblock-vm';
 
-import AppStateHOC from 'scratchhw-gui/src/lib/app-state-hoc.jsx';
+import AppStateHOC from 'openblock-gui/src/lib/app-state-hoc.jsx';
 import {
     LoadingStates,
     onFetchedProjectData,
@@ -18,11 +18,11 @@ import {
     requestNewProject,
     requestProjectUpload,
     setProjectId
-} from 'scratchhw-gui/src/reducers/project-state';
+} from 'openblock-gui/src/reducers/project-state';
 import {
     openLoadingProject,
     closeLoadingProject
-} from 'scratchhw-gui/src/reducers/modals';
+} from 'openblock-gui/src/reducers/modals';
 
 import ElectronStorageHelper from '../common/ElectronStorageHelper';
 
