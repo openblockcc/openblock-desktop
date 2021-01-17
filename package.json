@@ -1,7 +1,7 @@
 {
   "name": "openblock-desktop",
   "productName": "Openblock",
-  "description": "Openblock 3.0 as a self-contained desktop application",
+  "description": "Openblock as a self-contained desktop application",
   "author": "Openblock Team",
   "version": "1.0.0-beta",
   "license": "BSD-3-Clause",

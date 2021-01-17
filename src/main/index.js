@@ -54,12 +54,12 @@ const displayPermissionDeniedWarning = (browserWindow, permissionType) => {
     case 'camera':
         title = 'Camera Permission Denied';
         message = 'Permission to use the camera has been denied. ' +
-            'Scratch will not be able to take a photo or use video sensing blocks.';
+            'OpenBlock will not be able to take a photo or use video sensing blocks.';
         break;
     case 'microphone':
         title = 'Microphone Permission Denied';
         message = 'Permission to use the microphone has been denied. ' +
-            'Scratch will not be able to record sounds or detect loudness.';
+            'OpenBlock will not be able to record sounds or detect loudness.';
         break;
     default: // shouldn't ever happen...
         title = 'Permission Denied';
@@ -69,10 +69,10 @@ const displayPermissionDeniedWarning = (browserWindow, permissionType) => {
     let instructions;
     switch (process.platform) {
     case 'darwin':
-        instructions = 'To change Scratch permissions, please check "Security & Privacy" in System Preferences.';
+        instructions = 'To change OpenBlock permissions, please check "Security & Privacy" in System Preferences.';
         break;
     default:
-        instructions = 'To change Scratch permissions, please check your system settings and restart Scratch.';
+        instructions = 'To change OpenBlock permissions, please check your system settings and restart OpenBlock.';
         break;
     }
     message = `${message}\n\n${instructions}`;
