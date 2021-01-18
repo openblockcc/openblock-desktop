@@ -3,7 +3,7 @@
   "productName": "Openblock",
   "description": "Openblock as a self-contained desktop application",
   "author": "Openblock Team",
-  "version": "1.0.0-beta",
+  "version": "1.0.0-beta2",
   "license": "BSD-3-Clause",
   "scripts": {
     "postinstall": "electron-builder install-app-deps && npm run cpext",
