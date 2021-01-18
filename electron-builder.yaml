@@ -4,7 +4,7 @@ directories:
 extraResources: ["tools", "extensions", "statics"]
 
 appId: openblock.cc.openblock-desktop
-productName: "Openblock"
+productName: "OpenBlock"
 publish: # empty provider list = don't publish
 
 # mac:
@@ -19,12 +19,12 @@ publish: # empty provider list = don't publish
 #   hardenedRuntime: true
 #   icon: buildResources/OpenBlockDesktop.icns
 #   provisioningProfile: embedded.provisionprofile
-#   artifactName: "Openblock ${version}.${ext}"
+#   artifactName: "OpenBlock ${version}.${ext}"
 #   target:
 #     - dmg
 #     - mas
 # dmg:
-#   title: "Openblock ${version}"
+#   title: "OpenBlock ${version}"
 # mas:
 #   category: public.app-category.education
 #   entitlements: buildResources/entitlements.mas.plist
@@ -47,4 +47,4 @@ win:
 nsis:
   oneClick: false # allow user to choose per-user or per-machine
   allowToChangeInstallationDirectory: true
-  artifactName: "Openblock ${version} Setup.${ext}"
+  artifactName: "OpenBlock ${version} Setup.${ext}"

@@ -19,21 +19,17 @@ class ElectronStorageHelper {
      * @return {Promise.<Asset>} A promise for the contents of the asset.
      */
     load (assetType, assetId, dataFormat) {
-        console.log('load:', assetType, assetId, dataFormat);
         assetId = path.basename(assetId);
         dataFormat = path.basename(dataFormat);
 
         return new Promise((resolve, reject) => {
-            console.log('path:', path.resolve(staticAssets, `${assetId}.${dataFormat}`));
             fs.readFile(
                 path.resolve(staticAssets, `${assetId}.${dataFormat}`),
                 (err, data) => {
                     if (err) {
                         reject(err);
-                        console.log('load Error');
                     } else {
                         resolve(new this.parent.Asset(assetType, assetId, dataFormat, data));
-                        console.log('resolve:');
                     }
                 }
             );
