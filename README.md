@@ -1,23 +1,22 @@
-# scratch-desktop
+# openblock-desktop
 
-OpenBlock  as a standalone desktop application
+OpenBlock as a standalone desktop application
+
+Visit the wiki to lean more: [https://openblockcc.github.io/wiki/](https://openblockcc.github.io/wiki/)
 
 ## Developer Instructions
 
-### A note about `scratch-gui`
+### A note about `openblock-gui`
 
-Eventually, the `scratch-desktop` branch of the Scratch GUI repository will be merged with that repository's main
-development line. For now, though, the `scratch-desktop` branch holds a few changes that are necessary for the Scratch
+Eventually, the `openblock-desktop` branch of the OpenBlock GUI repository will be merged with that repository's main
+development line. For now, though, the `openblock-desktop` branch holds a few changes that are necessary for the OpenBlock
 app to function correctly but are not yet merged into the main development branch. If you only intend to build or work
-on the `scratch-desktop` repository then you can ignore this, but if you intend to work on `scratch-gui` as well, make
-sure you use the `scratch-desktop` branch there.
-
-Previously it was necessary to explicitly build `scratch-gui` before building `scratch-desktop`. This is no longer
-necessary and the related build scripts, such as `build-gui`, have been removed.
+on the `openblock-desktop` repository then you can ignore this, but if you intend to work on `openblock-gui` as well, make
+sure you use the `openblock-desktop` branch there.
 
 ### Prepare media library assets
 
-In the `scratch-desktop` directory, run `npm run fetch`. Re-run this any time you update `scratch-gui` or make any
+In the `openblock-desktop` directory, run `npm run fetch`. Re-run this any time you update `openblock-gui` or make any
 other changes which might affect the media libraries.
 
 ### Run in development mode
@@ -32,7 +31,7 @@ Node that on macOS this will require installing various certificates.
 
 #### Signing the NSIS installer (Windows, non-store)
 
-*This section is relevant only to members of the Scratch Team.*
+*This section is relevant only to members of the OpenBlock Team.*
 
 By default all Windows installers are unsigned. An APPX package for the Microsoft Store shouldn't be signed: it will
 be signed automatically as part of the store submission process. On the other hand, the non-Store NSIS installer
@@ -56,7 +55,7 @@ Sometimes the macOS build process will result in a build which crashes on startu
 for an entry similar to this:
 
 ```text
-failed to parse entitlements for Scratch[12345]: OSUnserializeXML: syntax error near line 1
+failed to parse entitlements for OpenBlock[12345]: OSUnserializeXML: syntax error near line 1
 ```
 
 This appears to be an issue with `codesign` itself. Rebooting your computer and trying to build again might help. Yes,
@@ -87,7 +86,7 @@ configuration like this:
                 "name": "Desktop",
                 "type": "node",
                 "request": "launch",
-                "cwd": "${workspaceFolder:scratch-desktop}",
+                "cwd": "${workspaceFolder:openblock-desktop}",
                 "runtimeExecutable": "npm",
                 "autoAttachChildProcesses": true,
                 "runtimeArgs": ["start", "--"],
@@ -95,7 +94,7 @@ configuration like this:
                 "skipFiles": [
                     // it seems like skipFiles only reliably works with 1 entry :(
                     //"<node_internals>/**",
-                    "${workspaceFolder:scratch-desktop}/node_modules/electron/dist/resources/*.asar/**"
+                    "${workspaceFolder:openblock-desktop}/node_modules/electron/dist/resources/*.asar/**"
                 ],
                 "sourceMaps": true,
                 "timeout": 30000,
