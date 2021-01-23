@@ -22,9 +22,10 @@ npm-*
 # don't store the assets downloaded with the `fetch` script
 /statics
 
-# don't store the tools
-/tools/Arduino
+# Temporary resource
 /extensions
+/tools
+
 
 # generated translation files
 /translations

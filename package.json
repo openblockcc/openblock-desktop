@@ -6,9 +6,10 @@
   "version": "1.0.0-beta2",
   "license": "BSD-3-Clause",
   "scripts": {
-    "postinstall": "electron-builder install-app-deps && npm run cpext",
+    "postinstall": "electron-builder install-app-deps && npm run cpext && npm run cptools",
     "cpext": "cpy ./ ../../../extensions --parents --cwd=./node_modules/openblock-extension/src",
-    "clean": "rimraf ./dist ./statics ./extensions ./translations",
+    "cptools": "cpy ./ ../../../tools --parents --cwd=./node_modules/openblock-link/tools",
+    "clean": "rimraf ./dist ./statics ./extensions ./tools ./translations",
     "start": "mkdirp ./dist && electron-webpack dev --bail --display-error-details --env.minify=false --no-progress",
     "compile": "mkdirp ./dist && electron-webpack --bail --display-error-details --env.minify=false --no-progress",
     "fetch": "rimraf ./statics && mkdirp ./statics && git clone https://github.com/openblockcc/openblock-asset.git statics",
@@ -17,8 +18,8 @@
     "build:dir": "npm run compile && npm run doBuild -- --mode=dir",
     "build:dist": "npm run compile && npm run doBuild -- --mode=dist",
     "doBuild": "node ./scripts/electron-builder-wrapper.js",
-    "dist": "npm run clean && npm run compile && npm run fetch && npm run cpext && npm run doBuild -- --mode=dist",
-    "distDev": "npm run clean && npm run compile && npm run fetch && npm run cpext && npm run doBuild -- --mode=dev",
+    "dist": "npm run clean && npm run compile && npm run fetch && npm run cpext && npm run cptools && npm run doBuild -- --mode=dist",
+    "distDev": "npm run clean && npm run compile && npm run fetch && npm run cpext && npm run cptools && npm run doBuild -- --mode=dev",
     "test": "npm run test:lint",
     "test:lint": "eslint --cache --color --ext .jsx,.js ."
   },
@@ -27,8 +28,8 @@
     "url": "git+ssh://git@github.com/openblockcc/openblock-desktop.git"
   },
   "dependencies": {
-    "openblock-extension": "latest",
-    "openblock-link": "latest",
+    "openblock-extension": "0.1.0-prerelease.20210116185639",
+    "openblock-link": "0.1.0-prerelease.20210123044629",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
