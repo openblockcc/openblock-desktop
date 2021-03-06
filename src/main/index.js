@@ -390,6 +390,9 @@ app.on('ready', () => {
             fs.writeFileSync(applicationConfig, JSON.stringify({version: appVersion}));
         }
     } else {
+        if (fs.existsSync(dataPath)) {
+            del.sync([dataPath], {force: true});
+        }
         fs.writeFileSync(applicationConfig, JSON.stringify({version: appVersion}));
     }
 
