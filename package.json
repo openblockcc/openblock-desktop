@@ -3,7 +3,7 @@
   "productName": "Openblock",
   "description": "Openblock as a self-contained desktop application",
   "author": "Openblock Team",
-  "version": "1.1.0-beta1",
+  "version": "1.2.0-beta",
   "license": "BSD-3-Clause",
   "scripts": {
     "postinstall": "electron-builder install-app-deps && npm run cpext && npm run cptools",
@@ -28,8 +28,10 @@
     "url": "git+ssh://git@github.com/openblockcc/openblock-desktop.git"
   },
   "dependencies": {
-    "openblock-extension": "0.1.0-prerelease.20210301102200",
-    "openblock-link": "0.1.0-prerelease.20210123062540",
+    "compare-versions": "^3.6.0",
+    "del": "^6.0.0",
+    "openblock-extension": "0.1.0-prerelease.20210306123417",
+    "openblock-link": "0.1.0-prerelease.20210306040747",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
@@ -64,13 +66,12 @@
     "mkdirp": "^1.0.4",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "nets": "^3.2.0",
+    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v1.2.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-intl": "2.9.0",
     "react-redux": "5.0.7",
     "redux": "3.7.2",
-    "rimraf": "^3.0.2",
-    "openblock-gui": "github:openblockcc/openblock-gui#desktop",
     "uuid": "^8.0.0",
     "webpack": "^4.43.0"
   },

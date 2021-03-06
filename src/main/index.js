@@ -11,6 +11,9 @@ import MacOSMenu from './MacOSMenu';
 import log from '../common/log.js';
 import {productName, version} from '../../package.json';
 
+import compareVersions from 'compare-versions';
+import del from 'del';
+
 const OpenBlockLink = require('openblock-link');
 const OpenBlockExtension = require('openblock-extension');
 
@@ -368,19 +371,39 @@ app.on('ready', () => {
     const userDataPath = app.getPath(
         'userData'
     );
+    const dataPath = path.join(userDataPath, 'Data');
+
     const appPath = app.getAppPath();
+
+    const appVersion = app.getVersion();
+    console.log('Current version: ', appVersion);
+
+    // if current version is newer then cache log, delet the data cache dir and write the
+    // new version into the cache file.
+    const applicationConfig = path.join(userDataPath, 'application.json');
+    if (fs.existsSync(applicationConfig)) {
+        const oldVersion = JSON.parse(fs.readFileSync(applicationConfig)).version;
+        if (compareVersions.compare(appVersion, oldVersion, '>')) {
+            if (fs.existsSync(dataPath)) {
+                del.sync([dataPath], {force: true});
+            }
+            fs.writeFileSync(applicationConfig, JSON.stringify({version: appVersion}));
+        }
+    } else {
+        fs.writeFileSync(applicationConfig, JSON.stringify({version: appVersion}));
+    }
 
     let toolsPath;
     if (appPath.search(/app/g) !== -1) {
         toolsPath = path.join(appPath, '../tools');
     // eslint-disable-next-line no-negated-condition
     } else if (appPath.search(/main/g) !== -1) {
-        console.log('appPath=', appPath);
+        console.log('appPath: ', appPath);
         toolsPath = path.join(appPath, '../win-unpacked/resources/tools');
     } else {
         toolsPath = path.join(appPath, 'tools');
     }
-    const link = new OpenBlockLink(path.join(userDataPath, 'Data'), toolsPath);
+    const link = new OpenBlockLink(dataPath, toolsPath);
     link.listen();
 
     let extensionsPath;
