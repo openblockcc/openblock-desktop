@@ -418,7 +418,7 @@ app.on('ready', () => {
     } else {
         extensionsPath = path.join(appPath, 'extensions');
     }
-    const extension = new OpenBlockExtension(path.join(userDataPath, 'Data'), extensionsPath);
+    const extension = new OpenBlockExtension(dataPath, extensionsPath);
     extension.listen();
 
     _windows.main = createMainWindow();
