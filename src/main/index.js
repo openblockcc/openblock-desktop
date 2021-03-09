@@ -232,6 +232,10 @@ const createMainWindow = () => {
     });
     const webContents = window.webContents;
 
+    webContents.on('did-finish-load', () => {
+        webContents.setZoomFactor(1.05);
+    });
+
     webContents.session.on('will-download', (willDownloadEvent, downloadItem) => {
         const isProjectSave = getIsProjectSave(downloadItem);
         const itemPath = downloadItem.getFilename();
