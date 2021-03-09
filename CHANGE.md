@@ -1,5 +1,18 @@
 # Change Log
 
+## V1.2.2beta
+
+- **New feature**
+    1. Add hide code stage button.
+    2. Change the ui of upload button.
+    3. Change the description of some boards.
+    4. Add a 1.05 scale to fix the problem of fuzzy font.
+    5. Change project file extension from .sb3 to .ob.
+
+- **Fix bug**
+    1. Microbit generator error.
+    2. The pin menu of arduino set digital out does not have analog pin items.
+
 ## v1.2.1beta
 
 - **Fix bug**
