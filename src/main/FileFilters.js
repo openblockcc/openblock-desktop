@@ -12,23 +12,27 @@ const saveFilters = {
         extensions: ['png']
     },
     SB: {
-        name: 'OpenBlock 1 Project',
+        name: 'Scratch 1 Project',
         extensions: ['sb']
     },
     SB2: {
-        name: 'OpenBlock 2 Project',
+        name: 'Scratch 2 Project',
         extensions: ['sb2']
     },
     SB3: {
-        name: 'OpenBlock 3 Project',
+        name: 'Scratch 3 Project',
         extensions: ['sb3']
     },
+    OB: {
+        name: 'OpenBlock Project',
+        extensions: ['ob']
+    },
     Sprite2: {
-        name: 'OpenBlock 2 Sprite',
+        name: 'Scratch 2 Sprite',
         extensions: ['sprite2']
     },
     Sprite3: {
-        name: 'OpenBlock 3 Sprite',
+        name: 'Scratch 3 Sprite',
         extensions: ['sprite3']
     },
     SVG: {
@@ -63,7 +67,8 @@ const loadFilters = {
         extensions: [
             ...saveFilters.SB3.extensions,
             ...saveFilters.SB2.extensions,
-            ...saveFilters.SB.extensions
+            ...saveFilters.SB.extensions,
+            ...saveFilters.OB.extensions
         ]
     },
     AllSounds: {

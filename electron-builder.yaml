@@ -1,7 +1,7 @@
 directories:
   buildResources: buildResources
   output: dist
-extraResources: ["tools", "extensions", "statics"]
+extraResources: ["tools", "devices", "extensions", "statics"]
 
 appId: openblock.cc.openblock-desktop
 productName: "OpenBlock"

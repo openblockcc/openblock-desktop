@@ -15,6 +15,7 @@ import compareVersions from 'compare-versions';
 import del from 'del';
 
 const OpenBlockLink = require('openblock-link');
+const OpenBlockDevice = require('openblock-device');
 const OpenBlockExtension = require('openblock-extension');
 
 // suppress deprecation warning; this will be the default in Electron 9
@@ -232,10 +233,6 @@ const createMainWindow = () => {
     });
     const webContents = window.webContents;
 
-    webContents.on('did-finish-load', () => {
-        webContents.setZoomFactor(1.05);
-    });
-
     webContents.session.on('will-download', (willDownloadEvent, downloadItem) => {
         const isProjectSave = getIsProjectSave(downloadItem);
         const itemPath = downloadItem.getFilename();
@@ -424,6 +421,18 @@ app.on('ready', () => {
     }
     const extension = new OpenBlockExtension(dataPath, extensionsPath);
     extension.listen();
+
+    let devicesPath;
+    if (appPath.search(/app/g) !== -1) {
+        devicesPath = path.join(appPath, '../devices');
+    // eslint-disable-next-line no-negated-condition
+    } else if (appPath.search(/main/g) !== -1) {
+        devicesPath = path.join(appPath, '../win-unpacked/resources/devices');
+    } else {
+        devicesPath = path.join(appPath, 'devices');
+    }
+    const device = new OpenBlockDevice(dataPath, devicesPath);
+    device.listen();
 
     _windows.main = createMainWindow();
     _windows.main.on('closed', () => {

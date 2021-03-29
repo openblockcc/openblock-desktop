@@ -3,10 +3,11 @@
   "productName": "Openblock",
   "description": "Openblock as a self-contained desktop application",
   "author": "Openblock Team",
-  "version": "1.2.2-beta",
+  "version": "2.0.0",
   "license": "MIT",
   "scripts": {
-    "postinstall": "electron-builder install-app-deps && npm run cpext && npm run cptools",
+    "postinstall": "electron-builder install-app-deps && npm run cpdevice && npm run cpext && npm run cptools",
+    "cpdevice": "cpy ./ ../../../devices --parents --cwd=./node_modules/openblock-device/src",
     "cpext": "cpy ./ ../../../extensions --parents --cwd=./node_modules/openblock-extension/src",
     "cptools": "cpy ./ ../../../tools --parents --cwd=./node_modules/openblock-link/tools",
     "clean": "rimraf ./dist ./statics ./extensions ./tools ./translations",
@@ -18,8 +19,8 @@
     "build:dir": "npm run compile && npm run doBuild -- --mode=dir",
     "build:dist": "npm run compile && npm run doBuild -- --mode=dist",
     "doBuild": "node ./scripts/electron-builder-wrapper.js",
-    "dist": "npm run clean && npm run compile && npm run fetch && npm run cpext && npm run cptools && npm run doBuild -- --mode=dist",
-    "distDev": "npm run clean && npm run compile && npm run fetch && npm run cpext && npm run cptools && npm run doBuild -- --mode=dev",
+    "dist": "npm run clean && npm run compile && npm run fetch && npm run cpdevice && npm run cpext && npm run cptools && npm run doBuild -- --mode=dist",
+    "distDev": "npm run clean && npm run compile && npm run fetch && npm run cpdevice && npm run cpext && npm run cptools && npm run doBuild -- --mode=dev",
     "test": "npm run test:lint",
     "test:lint": "eslint --cache --color --ext .jsx,.js ."
   },
@@ -30,8 +31,9 @@
   "dependencies": {
     "compare-versions": "^3.6.0",
     "del": "^6.0.0",
-    "openblock-extension": "0.1.0-prerelease.20210307113931",
-    "openblock-link": "0.1.0-prerelease.20210306040747",
+    "openblock-device": "0.1.0-prerelease.20210328115506",
+    "openblock-extension": "0.1.0-prerelease.20210329032033",
+    "openblock-link": "0.1.0-prerelease.20210326122102",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
@@ -66,7 +68,7 @@
     "mkdirp": "^1.0.4",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "nets": "^3.2.0",
-    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v1.2.2",
+    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.0.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-intl": "2.9.0",

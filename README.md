@@ -20,4 +20,4 @@ OpenBlock as a standalone desktop application.
 
 ## Developer Instructions
 
-Visit the wiki to lean more: [https://openblockcc.github.io/wiki/](https://openblockcc.github.io/wiki/)
+Visit the wiki to lean more: [https://openblockcc.gitee.io/wiki/](https://openblockcc.gitee.io/wiki/)
