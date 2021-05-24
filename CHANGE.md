@@ -1,5 +1,30 @@
 # Change Log
 
+## v2.1.0
+
+- **New feature**
+    1. Change arduino build tool from arduino-builder to arduino-cli.
+    2. Add remote upgrade function for external extension and device.
+    3. Modify the default sprite to Demon Bird.
+    4. Add arduino esp32 board support.
+    5. Add microbit V2 board support.
+    6. Add clear cache button.
+    7. Add install driver button.
+    8. Move the real-time mode connection indicator to the stage head.
+    9. Add localization for desktop alters.
+    10. Add timeout error in upload modal. If it gets stuck for tens of seconds, it will show timeout error, allow users to click the close button but not stuck forever.
+    11. Add arduino uno ultra base board to support customized board witch A6 A7 pins.
+    12. Optimize the external extension and device framwork.
+    13. Optimize the firmware files structure.
+    14. Optimize the serialport framwork. Prevent interface freeze caused by receiving high-speed serialport data.
+    15. Add QDP ROBOT C02 kit(arduino esp32).
+
+- **Fix bug**
+    1. Stuck at the upload modal if unplug the usb cable while in arduino build progress.
+    2. Unplug the usb cable while in arduino upload progress, the gui does not disconnect the device. User could still click the upload button and then will stuck in upload modal.
+    3. Uploading the program or firmware after connecting and disconnecting the device several times will cause the real-time mode communication bug.
+    4. After the upload is successful, if user do not close the upload window, unplug the usb cable, it will display upload failure.
+
 ## v2.0.0
 
 - **New feature**
