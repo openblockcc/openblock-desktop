@@ -13,7 +13,8 @@ npm-*
 /.opt-in
 
 # Temporary resource
-/extensions
+/external-resources
 /tools
-/devices
+/firmwares
+/drivers
 

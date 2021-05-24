@@ -1,23 +1,23 @@
 # openblock-desktop
 
+[![Gitter](https://badges.gitter.im/openblockcc/community.svg)](https://gitter.im/openblockcc/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 OpenBlock as a standalone desktop application.
 
-- **Support device**
+![screenshot](./doc/screenshot.png)
 
-	Arduino Uno, Arduino Nano, Arduino Mini, Arduino Leonardo, Arduino Mega2560
+## Getting Start
 
-	Microbit
+Visit the wiki: [https://openblockcc.github.io/wiki/](https://openblockcc.github.io/wiki/)
 
-- **Support program mode**
+Visit the wiki on gitee (mirror): [https://openblockcc.gitee.io/wiki/](https://openblockcc.gitee.io/wiki/)
 
-	Realtime(Traditional scratch 3.0 mode), Upload
+## Join chat
 
-- **Unique feature**
+- Gitter: [https://gitter.im/openblockcc/community](https://gitter.im/openblockcc/community?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
 
-	Support load external extensions
+- Chinese QQ group: 933484739
 
-![screenshot1](./doc/screenshot1.png)
+## Bug Report
 
-## Developer Instructions
-
-Visit the wiki to lean more: [https://openblockcc.gitee.io/wiki/](https://openblockcc.gitee.io/wiki/)
+You can submit the bug log in issues of this project.

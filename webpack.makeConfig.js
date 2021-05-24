@@ -114,6 +114,9 @@ const makeConfig = function (defaultConfig, options) {
             ]
         },
         plugins: [
+            new webpack.DefinePlugin({
+                'process.env.GA_ID': `"${process.env.GA_ID || 'UA-000000-01'}"`
+            }),
             new webpack.SourceMapDevToolPlugin({
                 filename: '[file].map'
             }),

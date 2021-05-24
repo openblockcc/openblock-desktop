@@ -3,6 +3,8 @@ import fs from 'fs-extra';
 import path from 'path';
 import {URL} from 'url';
 import {promisify} from 'util';
+import {execFile} from 'child_process';
+import os from 'os';
 
 import argv from './argv';
 import {getFilterForExtension} from './FileFilters';
@@ -11,12 +13,22 @@ import MacOSMenu from './MacOSMenu';
 import log from '../common/log.js';
 import {productName, version} from '../../package.json';
 
+import {v4 as uuidv4} from 'uuid';
+import {JSONStorage} from 'node-localstorage';
+
 import compareVersions from 'compare-versions';
 import del from 'del';
 
-const OpenBlockLink = require('openblock-link');
-const OpenBlockDevice = require('openblock-device');
-const OpenBlockExtension = require('openblock-extension');
+import formatMessage from 'format-message';
+import locales from 'openblock-l10n/locales/desktop-msgs';
+import osLocale from 'os-locale';
+
+import OpenBlockLink from 'openblock-link';
+import OpenblockResourceServer from 'openblock-resource';
+
+let resourceServer;
+
+const nodeStorage = new JSONStorage(app.getPath('userData'));
 
 // suppress deprecation warning; this will be the default in Electron 9
 app.allowRendererProcessReuse = true;
@@ -56,27 +68,59 @@ const displayPermissionDeniedWarning = (browserWindow, permissionType) => {
     let message;
     switch (permissionType) {
     case 'camera':
-        title = 'Camera Permission Denied';
-        message = 'Permission to use the camera has been denied. ' +
-            'OpenBlock will not be able to take a photo or use video sensing blocks.';
+        title = formatMessage({
+            id: 'index.cameraPermissionDeniedTitle',
+            default: 'Camera Permission Denied',
+            description: 'prompt for camera permission denied'
+        });
+        message = formatMessage({
+            id: 'index.cameraPermissionDeniedMessage',
+            default: 'Permission to use the camera has been denied. ' +
+                'OpenBlock will not be able to take a photo or use video sensing blocks.',
+            description: 'message for camera permission denied'
+        });
         break;
     case 'microphone':
-        title = 'Microphone Permission Denied';
-        message = 'Permission to use the microphone has been denied. ' +
-            'OpenBlock will not be able to record sounds or detect loudness.';
+        title = formatMessage({
+            id: 'index.microphonePermissionDeniedTitle',
+            default: 'Microphone Permission Denied',
+            description: 'prompt for microphone permission denied'
+        });
+        message = formatMessage({
+            id: 'index.microphonePermissionDeniedMessage',
+            default: 'Permission to use the microphone has been denied. ' +
+                    'OpenBlock will not be able to record sounds or detect loudness.',
+            description: 'message for microphone permission denied'
+        });
         break;
     default: // shouldn't ever happen...
-        title = 'Permission Denied';
-        message = 'A permission has been denied.';
+        title = formatMessage({
+            id: 'index.permissionDeniedTitle',
+            default: 'Permission Denied',
+            description: 'prompt for permission denied'
+        });
+        message = formatMessage({
+            id: 'index.permissionDeniedMessage',
+            default: 'A permission has been denied.',
+            description: 'message for permission denied'
+        });
     }
 
     let instructions;
     switch (process.platform) {
     case 'darwin':
-        instructions = 'To change OpenBlock permissions, please check "Security & Privacy" in System Preferences.';
+        instructions = formatMessage({
+            id: 'index.darwinPermissionDeniedInstructions',
+            default: 'To change OpenBlock permissions, please check "Security & Privacy" in System Preferences.',
+            description: 'prompt for fix darwin permission denied instructions'
+        });
         break;
     default:
-        instructions = 'To change OpenBlock permissions, please check your system settings and restart OpenBlock.';
+        instructions = formatMessage({
+            id: 'index.permissionDeniedInstructions',
+            default: 'To change OpenBlock permissions, please check your system settings and restart OpenBlock.',
+            description: 'prompt for fix permission denied instructions'
+        });
         break;
     }
     message = `${message}\n\n${instructions}`;
@@ -279,7 +323,11 @@ const createMainWindow = () => {
                     // don't clean up until after the message box to allow troubleshooting / recovery
                     await dialog.showMessageBox(window, {
                         type: 'error',
-                        message: `Save failed:\n${userChosenPath}`,
+                        message: `${formatMessage({
+                            id: 'index.saveFailed',
+                            default: 'Save failed:',
+                            description: 'prompt for save failed'
+                        })}\n${userChosenPath}`,
                         detail: e.message
                     });
                     fs.exists(tempPath).then(exists => {
@@ -300,9 +348,27 @@ const createMainWindow = () => {
     webContents.on('will-prevent-unload', ev => {
         const choice = dialog.showMessageBoxSync(window, {
             type: 'question',
-            message: 'Leave Openblock?',
-            detail: 'Any unsaved changes will be lost.',
-            buttons: ['Stay', 'Leave'],
+            message: formatMessage({
+                id: 'index.questionLeave',
+                default: 'Leave Openblock?',
+                description: 'prompt for leave Openblock'
+            }),
+            detail: formatMessage({
+                id: 'index.questionLeaveDetail',
+                default: 'Any unsaved changes will be lost.',
+                description: 'detail prompt for leave Openblock'
+            }),
+            buttons: [
+                formatMessage({
+                    id: 'index.stay',
+                    default: 'Stay',
+                    description: 'Label for stay'
+                }), formatMessage({
+                    id: 'index.leave',
+                    default: 'Leave',
+                    description: 'Label for leave'
+                })
+            ],
             cancelId: 0, // closing the dialog means "stay"
             defaultId: 0 // pressing enter or space without explicitly selecting something means "stay"
         });
@@ -314,6 +380,53 @@ const createMainWindow = () => {
 
     window.once('ready-to-show', () => {
         window.show();
+    });
+
+    ipcMain.on('loading-completed', () => {
+        // Retrieve the userid value, and if it's not there, assign it a new uuid.
+        const userId = nodeStorage.getItem('userId') || uuidv4();
+        // (re)save the userid, so it persists for the next app session.
+        nodeStorage.setItem('userId', userId);
+        webContents.send('setUserId', userId);
+
+        resourceServer.checkUpdate()
+            .then(info => {
+                if (info) {
+                    webContents.send('setUpdate', {phase: 'idle', version: info.version, describe: info.describe});
+                }
+            })
+            .catch(err => {
+                console.warn(`Error while checking for update: ${err}`);
+            });
+    });
+    ipcMain.on('reqeustCheckUpdate', () => {
+        resourceServer.checkUpdate()
+            .then(info => {
+                if (info) {
+                    webContents.send('setUpdate', {phase: 'idle', version: info.version, describe: info.describe});
+                } else {
+                    webContents.send('setUpdate', {phase: 'latest'});
+                }
+            })
+            .catch(err => {
+                webContents.send('setUpdate',
+                    {phase: 'error', message: err});
+            });
+    });
+
+    ipcMain.on('reqeustUpgrade', () => {
+        resourceServer.upgrade(state => {
+            webContents.send('setUpdate',
+                {phase: state.phase});
+        })
+            .then(() => {
+                app.relaunch();
+                app.exit();
+            })
+            .catch(err => {
+                webContents.send('setUpdate',
+                    {phase: 'error', message: err});
+            });
     });
 
     return window;
@@ -369,6 +482,18 @@ app.on('ready', () => {
         });
     }
 
+    let locale = osLocale.sync();
+    if (locale === 'zh-CN') {
+        locale = 'zh-cn';
+    } else if (locale === 'zh-TW') {
+        locale = 'zh-tw';
+    }
+    formatMessage.setup({
+        locale: locale,
+        // eslint-disable-next-line global-require
+        translations: locales
+    });
+
     const userDataPath = app.getPath(
         'userData'
     );
@@ -377,62 +502,52 @@ app.on('ready', () => {
     const appPath = app.getAppPath();
 
     const appVersion = app.getVersion();
-    console.log('Current version: ', appVersion);
 
     // if current version is newer then cache log, delet the data cache dir and write the
     // new version into the cache file.
-    const applicationConfig = path.join(userDataPath, 'application.json');
-    if (fs.existsSync(applicationConfig)) {
-        const oldVersion = JSON.parse(fs.readFileSync(applicationConfig)).version;
+    const oldVersion = nodeStorage.getItem('version');
+    if (oldVersion) {
         if (compareVersions.compare(appVersion, oldVersion, '>')) {
             if (fs.existsSync(dataPath)) {
                 del.sync([dataPath], {force: true});
             }
-            fs.writeFileSync(applicationConfig, JSON.stringify({version: appVersion}));
+            nodeStorage.setItem('version', appVersion);
         }
     } else {
-        if (fs.existsSync(dataPath)) {
-            del.sync([dataPath], {force: true});
-        }
-        fs.writeFileSync(applicationConfig, JSON.stringify({version: appVersion}));
+        nodeStorage.setItem('version', appVersion);
     }
 
-    let toolsPath;
+    let resourcePath;
     if (appPath.search(/app/g) !== -1) {
-        toolsPath = path.join(appPath, '../tools');
-    // eslint-disable-next-line no-negated-condition
-    } else if (appPath.search(/main/g) !== -1) {
-        console.log('appPath: ', appPath);
-        toolsPath = path.join(appPath, '../win-unpacked/resources/tools');
+        resourcePath = path.join(appPath, '../');
+    } else if (appPath.search(/main/g) !== -1) { // eslint-disable-line no-negated-condition
+        resourcePath = path.join(appPath, '../../');
     } else {
-        toolsPath = path.join(appPath, 'tools');
+        resourcePath = path.join(appPath);
     }
-    const link = new OpenBlockLink(dataPath, toolsPath);
+
+    // start link server
+    const link = new OpenBlockLink(dataPath, path.join(resourcePath, 'tools'));
     link.listen();
 
-    let extensionsPath;
-    if (appPath.search(/app/g) !== -1) {
-        extensionsPath = path.join(appPath, '../extensions');
-    // eslint-disable-next-line no-negated-condition
-    } else if (appPath.search(/main/g) !== -1) {
-        extensionsPath = path.join(appPath, '../win-unpacked/resources/extensions');
-    } else {
-        extensionsPath = path.join(appPath, 'extensions');
-    }
-    const extension = new OpenBlockExtension(dataPath, extensionsPath);
-    extension.listen();
+    // start resource server
+    resourceServer = new OpenblockResourceServer(dataPath, path.join(resourcePath, 'external-resources'));
+    resourceServer.listen();
 
-    let devicesPath;
-    if (appPath.search(/app/g) !== -1) {
-        devicesPath = path.join(appPath, '../devices');
-    // eslint-disable-next-line no-negated-condition
-    } else if (appPath.search(/main/g) !== -1) {
-        devicesPath = path.join(appPath, '../win-unpacked/resources/devices');
-    } else {
-        devicesPath = path.join(appPath, 'devices');
-    }
-    const device = new OpenBlockDevice(dataPath, devicesPath);
-    device.listen();
+    ipcMain.on('clearCache', () => {
+        del.sync(dataPath, {force: true});
+        app.relaunch();
+        app.exit();
+    });
+
+    ipcMain.on('installDriver', () => {
+        const driverPath = path.join(resourcePath, 'drivers');
+        if ((os.platform() === 'win32') && (os.arch() === 'x64')) {
+            execFile('install_x64.bat', [], {cwd: driverPath});
+        } else if ((os.platform() === 'win32') && (os.arch() === 'ia32')) {
+            execFile('install_x86.bat', [], {cwd: driverPath});
+        }
+    });
 
     _windows.main = createMainWindow();
     _windows.main.on('closed', () => {
@@ -466,7 +581,11 @@ const initialProjectDataPromise = (async () => {
         dialog.showMessageBox(_windows.main, {
             type: 'error',
             title: 'Failed to load project',
-            message: `Could not load project from file:\n${projectPath}`,
+            message: `${formatMessage({
+                id: 'index.failedLoadProject',
+                default: 'Could not load project from file:',
+                description: 'prompt for failed to load project'
+            })}\n${projectPath}`,
             detail: e.message
         });
     }

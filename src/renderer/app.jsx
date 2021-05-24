@@ -9,6 +9,7 @@ import {compose} from 'redux';
 import GUI from 'openblock-gui/src/index';
 import VM from 'openblock-vm';
 
+import analytics, {initialAnalytics} from 'openblock-gui/src/lib/analytics';
 import AppStateHOC from 'openblock-gui/src/lib/app-state-hoc.jsx';
 import {
     LoadingStates,
@@ -21,8 +22,10 @@ import {
 } from 'openblock-gui/src/reducers/project-state';
 import {
     openLoadingProject,
-    closeLoadingProject
+    closeLoadingProject,
+    openUpdateModal
 } from 'openblock-gui/src/reducers/modals';
+import {setUpdate} from 'openblock-gui/src/reducers/update';
 
 import ElectronStorageHelper from '../common/ElectronStorageHelper';
 
@@ -34,11 +37,9 @@ window.open = function (url, target) {
         shell.openExternal(url);
     }
 };
-// Register "base" page view
-// analytics.pageview('/');
 
 const appTarget = document.getElementById('app');
-appTarget.className = styles.app || 'app'; // TODO
+appTarget.className = styles.app || 'app';
 document.body.appendChild(appTarget);
 
 GUI.setAppElement(appTarget);
@@ -48,6 +49,8 @@ const ScratchDesktopHOC = function (WrappedComponent) {
         constructor (props) {
             super(props);
             bindAll(this, [
+                'handleClickCheckUpdate',
+                'handleClickUpgrade',
                 'handleProjectTelemetryEvent',
                 'handleSetTitleFromSave',
                 'handleStorageInit',
@@ -61,15 +64,18 @@ const ScratchDesktopHOC = function (WrappedComponent) {
                 this.props.onHasInitialProject(hasInitialProject, this.props.loadingState);
                 if (!hasInitialProject) {
                     this.props.onLoadingCompleted();
+                    ipcRenderer.send('loading-completed');
                     return;
                 }
                 this.props.vm.loadProject(initialProjectData).then(
                     () => {
                         this.props.onLoadingCompleted();
+                        ipcRenderer.send('loading-completed');
                         this.props.onLoadedProject(this.props.loadingState, true);
                     },
                     e => {
                         this.props.onLoadingCompleted();
+                        ipcRenderer.send('loading-completed');
                         this.props.onLoadedProject(this.props.loadingState, false);
                         remote.dialog.showMessageBox(remote.getCurrentWindow(), {
                             type: 'error',
@@ -90,12 +96,32 @@ const ScratchDesktopHOC = function (WrappedComponent) {
         }
         componentDidMount () {
             ipcRenderer.on('setTitleFromSave', this.handleSetTitleFromSave);
+            ipcRenderer.on('setUpdate', (event, args) => {
+                this.props.onSetUpdate(args);
+            });
+            ipcRenderer.on('setUserId', (event, args) => {
+                initialAnalytics(args);
+                // Register "base" page view
+                analytics.pageview('/', null, 'desktop');
+            });
         }
         componentWillUnmount () {
             ipcRenderer.removeListener('setTitleFromSave', this.handleSetTitleFromSave);
         }
         handleClickLogo () {
             ipcRenderer.send('open-about-window');
+        }
+        handleClickCheckUpdate () {
+            ipcRenderer.send('reqeustCheckUpdate');
+        }
+        handleClickUpgrade () {
+            ipcRenderer.send('reqeustUpgrade');
+        }
+        handleClickClearCache () {
+            ipcRenderer.send('clearCache');
+        }
+        handleClickInstallDriver () {
+            ipcRenderer.send('installDriver');
         }
         handleProjectTelemetryEvent (event, metadata) {
             ipcRenderer.send(event, metadata);
@@ -126,12 +152,15 @@ const ScratchDesktopHOC = function (WrappedComponent) {
                 isScratchDesktop
                 showTelemetryModal={shouldShowTelemetryModal}
                 onClickLogo={this.handleClickLogo}
+                onClickCheckUpdate={this.handleClickCheckUpdate}
+                onClickUpgrade={this.handleClickUpgrade}
+                onClickInstallDriver={this.handleClickInstallDriver}
+                onClickClearCache={this.handleClickClearCache}
                 onProjectTelemetryEvent={this.handleProjectTelemetryEvent}
                 onStorageInit={this.handleStorageInit}
                 onTelemetryModalOptIn={this.handleTelemetryModalOptIn}
                 onTelemetryModalOptOut={this.handleTelemetryModalOptOut}
                 onUpdateProjectTitle={this.handleUpdateProjectTitle}
-
                 // allow passed-in props to override any of the above
                 {...childProps}
             />);
@@ -146,6 +175,7 @@ const ScratchDesktopHOC = function (WrappedComponent) {
         onLoadingCompleted: PropTypes.func,
         onLoadingStarted: PropTypes.func,
         onRequestNewProject: PropTypes.func,
+        onSetUpdate: PropTypes.func,
         vm: PropTypes.instanceOf(VM).isRequired
     };
     const mapStateToProps = state => {
@@ -174,7 +204,11 @@ const ScratchDesktopHOC = function (WrappedComponent) {
             const canSaveToServer = false;
             return dispatch(onLoadedProject(loadingState, canSaveToServer, loadSuccess));
         },
-        onRequestNewProject: () => dispatch(requestNewProject(false))
+        onRequestNewProject: () => dispatch(requestNewProject(false)),
+        onSetUpdate: message => {
+            dispatch(setUpdate(message));
+            dispatch(openUpdateModal());
+        }
     });
 
     return connect(mapStateToProps, mapDispatchToProps)(ScratchDesktopComponent);

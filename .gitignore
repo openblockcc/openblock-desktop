@@ -23,9 +23,10 @@ npm-*
 /statics
 
 # Temporary resource
-/extensions
+/external-resources
 /tools
-/devices
+/firmwares
+/drivers
 
 
 # generated translation files
