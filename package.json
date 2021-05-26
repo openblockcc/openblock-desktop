@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "openblock-link": "0.1.0-prerelease.20210522090031",
-    "openblock-resource": "0.1.0-prerelease.20210510061547",
+    "openblock-resource": "0.1.0-prerelease.20210526134633",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
