@@ -1,5 +1,18 @@
 # Change Log
 
+## v2.1.1
+
+- **New feature**
+    1. Add esp8266 and makey makey support.
+    2. Add a button to show all connectable device. Prevent users from being unable to connect to the device when using a USB-to-serial chip that is not included.
+
+- **Fix bug**
+    1. Severe freeze after switching targets several times.
+    2. The remote resource update address configuration error caused the program to crash after clicking the Check Update button.
+    3. The remote resource update address incorrectly uses openblockcc instead of the address in the configuration.
+    4. When the blocks nested inside the blocks in the toolbox are in the workspace, the internal blocks are erroneously disabled when the disabled state is updated.
+    5. An error is reported after opening multiple windows: the address is already in use.
+
 ## v2.1.0
 
 - **New feature**

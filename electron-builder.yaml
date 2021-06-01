@@ -7,6 +7,12 @@ appId: openblock.cc.openblock-desktop
 productName: "OpenBlock"
 publish: # empty provider list = don't publish
 
+fileAssociations:
+    ext: ob,
+    name: Openblock project file,
+    role: Editor
+    icon: buildResources/OpenBlockFile.ico
+
 # mac:
 #   category: public.app-category.education
 #   entitlements: buildResources/entitlements.mac.plist
