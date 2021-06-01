@@ -5,6 +5,7 @@
 - **New feature**
     1. Add esp8266 and makey makey support.
     2. Add a button to show all connectable device. Prevent users from being unable to connect to the device when using a USB-to-serial chip that is not included.
+    3. Add file associations for .ob project file.
 
 - **Fix bug**
     1. Severe freeze after switching targets several times.
