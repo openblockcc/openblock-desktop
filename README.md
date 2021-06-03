@@ -9,9 +9,9 @@ OpenBlock as a standalone desktop application.
 
 ## Getting Start
 
-Visit the wiki: [https://openblockcc.github.io/wiki/](https://openblockcc.github.io/wiki/)
+Visit the wiki: [https://openblockcc.github.io/wiki/main](https://openblockcc.github.io/wiki/main)
 
-Visit the wiki on gitee (mirror): [https://openblockcc.gitee.io/wiki/](https://openblockcc.gitee.io/wiki/)
+Visit the wiki on gitee (mirror): [https://openblockcc.gitee.io/wiki/main](https://openblockcc.gitee.io/wiki/main)
 
 ## Join chat
 
