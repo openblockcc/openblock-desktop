@@ -53,4 +53,6 @@ win:
 nsis:
   oneClick: false # allow user to choose per-user or per-machine
   allowToChangeInstallationDirectory: true
+  include: buildResources/installer.nsh
+#   license: LICENSE
   artifactName: "OpenBlock ${version} Setup.${ext}"
