@@ -1,3 +1,3 @@
-The Openblock trademarks, including the Openblock name, logo and the Openblock Devil Bird graphics(the "Marks"), are property of the Openblock.cc. Marks may not be used to endorse or promote products derived from this software without specific prior written permission.
+The Openblock trademarks, including the Openblock name, logo and the Openblock Devil Bird graphics(the "Marks"), are property of the Openblock.cc. Marks may not be used to endorse or promote non-software products products derived from this software without specific prior written permission.
 
-Without retaining the openblock name and logo, Openblock Devil Bird cannot be used for redistribution and use in source code and binary form without prior express written permission
+Without retaining the openblock name and logo, Openblock Devil Bird cannot be used for redistribution and use in source code and binary form without prior express written permission.
