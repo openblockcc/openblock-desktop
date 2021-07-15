@@ -3,7 +3,7 @@
   "productName": "Openblock",
   "description": "Openblock as a self-contained desktop application",
   "author": "Openblock Team",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "license": "MIT",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
@@ -33,7 +33,7 @@
     "url": "git+ssh://git@github.com/openblockcc/openblock-desktop.git"
   },
   "dependencies": {
-    "openblock-link": "0.1.0-prerelease.20210626101739",
+    "openblock-link": "0.1.0-prerelease.20210708055705",
     "openblock-resource": "0.1.0-prerelease.20210529040649",
     "source-map-support": "^0.5.19"
   },
@@ -75,8 +75,8 @@
     "monaco-editor-webpack-plugin": "^1.7.0",
     "nets": "^3.2.0",
     "node-localstorage": "^2.1.6",
-    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.2.0",
-    "openblock-l10n": "^3.10.20210626105402",
+    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.2.1",
+    "openblock-l10n": "^3.10.20210714115626",
     "os-locale": "^5.0.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
