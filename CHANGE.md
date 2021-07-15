@@ -5,7 +5,7 @@
 - **Fix bug**
 
     1. The data sent by the serial port is incorrect.
-    2. Merge LLK's official latest commit to fix errors that show.type undefine when a project cannot be opened or loaded when double-clicking the project file.
+    2. Sometimes the project file cannot be opened by double-click or cannot be loaded due to an error when loading the project.
     3. Duplicate loading of projects after connecting devices can cause multiple real-time mode listeners to start causing errors.
 
 ## v2.2.0
