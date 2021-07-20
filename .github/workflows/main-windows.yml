@@ -1,0 +1,46 @@
+name: Node.js CI
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    env:
+      GA_ID: ${{ secrets.GA_ID }}
+      NODE_ENV: production
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12.x'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Fetch Resource
+        run: npm run fetch:all
+
+      - name: Build Dist
+        run: npm run dist
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: true
+          prerelease: false
