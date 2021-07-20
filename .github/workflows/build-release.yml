@@ -6,8 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  build:
-
+  build-windows:
     runs-on: windows-latest
     env:
       GA_ID: ${{ secrets.GA_ID }}
@@ -22,7 +21,10 @@ jobs:
           node-version: '12.x'
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Install Electron Builder
+        run: npm i electron-builder -g
 
       - name: Fetch Resource
         run: npm run fetch:all
@@ -30,6 +32,10 @@ jobs:
       - name: Build Dist
         run: npm run dist
 
+  release:
+    needs: build-windows
+    runs-on: ubuntu-latest
+    steps:
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
