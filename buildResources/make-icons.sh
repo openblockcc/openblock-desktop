@@ -1,8 +1,8 @@
 #!/bin/bash
-SRC=../src/icon/ScratchDesktop.svg
-OUT_ICONSET=ScratchDesktop.iconset
-OUT_ICNS=ScratchDesktop.icns
-OUT_ICO=ScratchDesktop.ico
+SRC=../src/icon/OpenBlockDesktop.svg
+OUT_ICONSET=OpenBlockDesktop.iconset
+OUT_ICNS=OpenBlockDesktop.icns
+OUT_ICO=OpenBlockDesktop.ico
 TMP_ICO=tmp
 
 ICO_BASIC_SIZES="16 24 32 48 256"

@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import {URL} from 'url';
 import {promisify} from 'util';
-import {execFile} from 'child_process';
+import {execFile, spawn} from 'child_process';
 import os from 'os';
 
 import argv from './argv';
@@ -546,6 +546,8 @@ app.on('ready', () => {
             execFile('install_x64.bat', [], {cwd: driverPath});
         } else if ((os.platform() === 'win32') && (os.arch() === 'ia32')) {
             execFile('install_x86.bat', [], {cwd: driverPath});
+        } else if ((os.platform() === 'darwin')) {
+            spawn('sh', ['install.sh'], {shell: true, cwd: driverPath});
         }
     });
 

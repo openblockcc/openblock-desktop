@@ -13,24 +13,24 @@ fileAssociations:
   role: Editor
   icon: buildResources/OpenBlockFile.ico
 
-# mac:
-#   category: public.app-category.education
-#   entitlements: buildResources/entitlements.mac.plist
-#   extendInfo:
-#     NSCameraUsageDescription: >-
-#         This app requires camera access when taking a photo in the paint editor or using the video sensing blocks.
-#     NSMicrophoneUsageDescription: >-
-#         This app requires microphone access when recording sounds or detecting loudness.
-#   gatekeeperAssess: true
-#   hardenedRuntime: true
-#   icon: buildResources/OpenBlockDesktop.icns
-#   provisioningProfile: embedded.provisionprofile
-#   artifactName: "OpenBlock ${version}.${ext}"
-#   target:
-#     - dmg
-#     - mas
-# dmg:
-#   title: "OpenBlock ${version}"
+mac:
+  category: public.app-category.education
+  entitlements: buildResources/entitlements.mac.plist
+  extendInfo:
+    NSCameraUsageDescription: >-
+        This app requires camera access when taking a photo in the paint editor or using the video sensing blocks.
+    NSMicrophoneUsageDescription: >-
+        This app requires microphone access when recording sounds or detecting loudness.
+  gatekeeperAssess: true
+  hardenedRuntime: true
+  icon: buildResources/OpenBlockDesktop.icns
+  provisioningProfile: embedded.provisionprofile
+  artifactName: "OpenBlock ${version}.${ext}"
+  target:
+    - dmg
+    # - mas
+dmg:
+  title: "OpenBlock ${version}"
 # mas:
 #   category: public.app-category.education
 #   entitlements: buildResources/entitlements.mas.plist
