@@ -1,9 +1,6 @@
-name: Node.js CI
+name: Build and release
 
-on:
-  push:
-    branches:
-      - develop
+on: [push, pull_request]
 
 jobs:
   build-windows:
@@ -29,22 +26,110 @@ jobs:
           NODE_OPTIONS: --max_old_space_size=4096
         run: npm run dist
 
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: OpenBlockDesktopSetup.exe
+          path: dist/OpenBlock*Setup.exe
+          retention-days: 2
+
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+
+      - name: Npm Install
+        run: npm install
+
+      - name: Fetch Resource
+        run: npm run fetch:all
+
+      - name: Build Dist
+        env:
+          GA_ID: ${{ secrets.GA_ID }}
+          NODE_ENV: production
+          NODE_OPTIONS: --max_old_space_size=8192
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+        run: npm run dist
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: OpenBlockDesktop.dmg
+          path: dist/OpenBlock*.dmg
+          retention-days: 2
+
   create-release:
-    if: ${{ github.ref == 'refs/tags/*' }}
-    needs: build-windows
+    needs: [build-windows, build-mac]
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     runs-on: ubuntu-latest
     steps:
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          release_name: OpenBlock Desktop ${{ steps.package-version.outputs.current-version }}
           body: |
-            Changes in this Release
-            - First Change
-            - Second Change
+            - **New feature**
+              1. First Change
+              2. Second Change
+
+            - **Fix bug**
+              1. First Change
+              2. Second Change
           draft: true
           prerelease: false
+
+      - name: Download all build result
+        uses: actions/download-artifact@v2
+
+      - name: Zip windows setup
+        uses: thedoctor0/zip-release@master
+        with:
+            path: OpenBlockDesktopSetup.exe
+            filename: OpenBlockDesktop-Win.zip
+
+      - name: Zip mac setup
+        uses: thedoctor0/zip-release@master
+        with:
+            path: OpenBlockDesktop.dmg
+            filename: OpenBlockDesktop-Mac.zip
+
+      - name: Upload Release Windows Asset
+        id: upload-release-windows-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./OpenBlockDesktop-Win.zip
+          asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}(Win64).zip
+          asset_content_type: application/zip
+
+      - name: Upload Release Mac Asset
+        id: upload-release-mac-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./OpenBlockDesktop-Mac.zip
+          asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}(Mac).zip
+          asset_content_type: application/zip
+
