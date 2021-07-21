@@ -99,12 +99,13 @@ jobs:
       - name: Download all build result
         uses: actions/download-artifact@v2
 
-      - name: Zip file
-        run: |
-          zip OpenBlockDesktop-win64.zip OpenBlockDesktop-win64.exe
-          zip OpenBlockDesktop-mac.zip OpenBlockDesktop-mac.dmg
-
       # Windows x64 Release
+      - name: Zip win64 file
+        uses: papeloto/action-zip@v1
+        with:
+            files: OpenBlockDesktop-win64.exe
+            dest: OpenBlockDesktop-win64.zip
+
       - name: Relase Windows x64 package
         uses: actions/upload-release-asset@v1
         env:
@@ -116,6 +117,12 @@ jobs:
           asset_content_type: application/zip
 
       # Mac Release
+      - name: Zip mac file
+        uses: papeloto/action-zip@v1
+        with:
+            files: OpenBlockDesktop-mac.dmg
+            dest: OpenBlockDesktop-mac.zip
+
       - name: Relase Mac package
         uses: actions/upload-release-asset@v1
         env:
