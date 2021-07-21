@@ -107,22 +107,11 @@ jobs:
 
       # Windows x64 Release
       - name: Relase Windows x64 package
-        run: echo {Relase Windows x64 package}
+        run: echo Relase Windows x64 package
 
-      - name: Zip windows setup
-        uses: thedoctor0/zip-release@master
-        with:
-            path: OpenBlockDesktopSetup.exe
-            filename: OpenBlockDesktop-win.zip
+      - run: zip OpenBlockDesktop-win.zip OpenBlockDesktopSetup.exe
 
-      - uses: MCJack123/ghaction-generate-release-hashes@v1
-        with:
-            hash-type: sha1
-            file-name: OpenBlockDesktop-win.zip.sha1
-
-      - name: Upload Release Windows Asset
-        id: upload-release-windows-asset
-        uses: actions/upload-release-asset@v1
+      - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -131,34 +120,13 @@ jobs:
           asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}-win64.zip
           asset_content_type: application/zip
 
-      - uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenBlockDesktop-win.zip.sha1
-          asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}-win64.zip.sha1
-          asset_content_type: application/zip
-
-
       # Mac Release
       - name: Relase Mac package
-        run: echo {Relase Mac package}
+        run: echo Relase Mac package
 
-      - name: Zip mac setup
-        uses: thedoctor0/zip-release@master
-        with:
-            path: OpenBlockDesktop.dmg
-            filename: OpenBlockDesktop-mac.zip
+      - run: zip OpenBlockDesktop-mac.zip OpenBlockDesktop.dmg
 
-      - uses: MCJack123/ghaction-generate-release-hashes@v1
-        with:
-            hash-type: sha1
-            file-name: OpenBlockDesktop-mac.zip.sha1
-
-      - name: Upload Release Mac Asset
-        id: upload-release-mac-asset
-        uses: actions/upload-release-asset@v1
+      - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -167,11 +135,17 @@ jobs:
           asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}-mac.zip
           asset_content_type: application/zip
 
+      # Checksum Release
+      - name: Relase checksum
+        run: echo Relase checksum
+
+      - run: sha256sum OpenBlockDesktop-*.zip >> checksums.txt
+
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenBlockDesktop-mac.zip.sha1
-          asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}-mac.zip.sha1
+          asset_path: ./checksums.txt
+          asset_name: ${{ steps.package-version.outputs.current-version }}-checksums-sha256.txt
           asset_content_type: application/zip
