@@ -1,6 +1,10 @@
 name: Build and release
-
-on: [push, pull_request]
+     
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
 
 jobs:
   build-windows:
