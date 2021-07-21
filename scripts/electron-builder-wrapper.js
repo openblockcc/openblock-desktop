@@ -178,7 +178,8 @@ const parseArgs = function () {
         break;
     case 'dist':
         doPackage = true;
-        doSign = true;
+        // doSign = true; // skip code signing before getting a certificate
+        doSign = false;
     }
 
     return {
