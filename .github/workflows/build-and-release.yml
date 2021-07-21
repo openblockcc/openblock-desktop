@@ -1,5 +1,5 @@
 name: Build and release
-     
+
 on:
   push:
     branches: [ main ]
@@ -30,12 +30,17 @@ jobs:
           NODE_OPTIONS: --max_old_space_size=4096
         run: npm run dist
 
+      - name: Zip file
+        run: dir dist/OpenBlock*Setup.exe
+      - run: tar.exe -a -c -f OpenBlockDesktop-win64.zip dist/OpenBlock*Setup.exe
+      - run: dir OpenBlockDesktop-win64.zip
+
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: OpenBlockDesktopSetup.exe
-          path: dist/OpenBlock*Setup.exe
-          retention-days: 2
+          name: OpenBlockDesktop-win64.zip
+          path: OpenBlockDesktop-win64.zip
+          retention-days: 1
 
   build-mac:
     runs-on: macos-latest
@@ -61,12 +66,17 @@ jobs:
           CSC_IDENTITY_AUTO_DISCOVERY: false
         run: npm run dist
 
+      - name: Zip file
+        run: ls -lh dist/OpenBlock*.dmg
+      - run: zip OpenBlockDesktop-mac.zip dist/OpenBlock*.dmg
+      - run: ls -lh OpenBlockDesktop-mac.zip
+
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: OpenBlockDesktop.dmg
-          path: dist/OpenBlock*.dmg
-          retention-days: 2
+          name: OpenBlockDesktop-mac.zip
+          path: OpenBlockDesktop-mac.zip
+          retention-days: 1
 
   create-release:
     needs: [build-windows, build-mac]
@@ -105,36 +115,39 @@ jobs:
       - name: Download all build result
         uses: actions/download-artifact@v2
 
-      - name: Zip windows setup
-        uses: thedoctor0/zip-release@master
-        with:
-            path: OpenBlockDesktopSetup.exe
-            filename: OpenBlockDesktop-Win.zip
-
-      - name: Zip mac setup
-        uses: thedoctor0/zip-release@master
-        with:
-            path: OpenBlockDesktop.dmg
-            filename: OpenBlockDesktop-Mac.zip
-
-      - name: Upload Release Windows Asset
-        id: upload-release-windows-asset
+      # Windows x64 Release
+      - name: Relase Windows x64 package
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenBlockDesktop-Win.zip
+          asset_path: ./OpenBlockDesktop-win64.zip
           asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}-win64.zip
           asset_content_type: application/zip
 
-      - name: Upload Release Mac Asset
-        id: upload-release-mac-asset
+      # Mac Release
+      - name: Relase Mac package
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenBlockDesktop-Mac.zip
+          asset_path: ./OpenBlockDesktop-mac.zip
           asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}-mac.zip
+          asset_content_type: application/zip
+
+      # Checksum Release
+      - name: Relase checksum
+        run: echo Relase checksum
+
+      - run: sha256sum OpenBlockDesktop-*.zip >> checksums.txt
+
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./checksums.txt
+          asset_name: ${{ steps.package-version.outputs.current-version }}-checksums-sha256.txt
           asset_content_type: application/zip
