@@ -134,10 +134,8 @@ jobs:
           asset_content_type: application/zip
 
       # Checksum Release
-      - name: Relase checksum
-        run: echo Relase checksum
-
-      - run: sha256sum OpenBlockDesktop-*.zip >> checksums.txt
+      - name: Checksum
+        run: sha256sum OpenBlockDesktop-*.zip >> checksums.txt
 
       - uses: actions/upload-release-asset@v1
         env:
