@@ -30,7 +30,34 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: OpenBlockDesktop-win64.exe
+          name: OpenBlockDesktop-win-x64.exe
+          path: dist/OpenBlock*Setup.exe
+          retention-days: 1
+
+  build-windows32:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+
+      - name: Npm Install
+        run: npm install
+
+      - name: Build Dist
+        env:
+          GA_ID: ${{ secrets.GA_ID }}
+          NODE_ENV: production
+          NODE_OPTIONS: --max_old_space_size=4096
+        run: npm run dist32
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: OpenBlockDesktop-win-x86.exe
           path: dist/OpenBlock*Setup.exe
           retention-days: 1
 
@@ -63,7 +90,7 @@ jobs:
           retention-days: 1
 
   create-release:
-    needs: [build-windows, build-mac]
+    needs: [build-windows, build-windows32, build-mac]
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     runs-on: ubuntu-latest
     steps:
@@ -100,11 +127,11 @@ jobs:
         uses: actions/download-artifact@v2
 
       # Windows x64 Release
-      - name: Zip win64 file
+      - name: Zip win x64 file
         uses: papeloto/action-zip@v1
         with:
-            files: OpenBlockDesktop-win64.exe
-            dest: OpenBlockDesktop-win64.zip
+            files: OpenBlockDesktop-win-x64.exe
+            dest: OpenBlockDesktop-win-x64.zip
 
       - name: Relase Windows x64 package
         uses: actions/upload-release-asset@v1
@@ -112,8 +139,25 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenBlockDesktop-win64.zip
-          asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}-win64.zip
+          asset_path: ./OpenBlockDesktop-win-x64.zip
+          asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}-win-x64.zip
+          asset_content_type: application/zip
+
+      # Windows x86 Release
+      - name: Zip win x86 file
+        uses: papeloto/action-zip@v1
+        with:
+            files: OpenBlockDesktop-win-x86.exe
+            dest: OpenBlockDesktop-win-x86.zip
+
+      - name: Relase Windows x64 package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./OpenBlockDesktop-win-x86.zip
+          asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}-win-x86.zip
           asset_content_type: application/zip
 
       # Mac Release
