@@ -34,7 +34,7 @@
     "url": "git+ssh://git@github.com/openblockcc/openblock-desktop.git"
   },
   "dependencies": {
-    "openblock-link": "0.1.0-prerelease.20210708055705",
+    "openblock-link": "0.1.0-prerelease.20210724043235",
     "openblock-resource": "0.1.0-prerelease.20210529040649",
     "source-map-support": "^0.5.19"
   },
@@ -77,7 +77,7 @@
     "nets": "^3.2.0",
     "node-localstorage": "^2.1.6",
     "npm-force-resolutions": "0.0.10",
-    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.2.1",
+    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.2.2",
     "openblock-l10n": "^3.10.20210714115626",
     "os-locale": "^5.0.0",
     "react": "^16.14.0",
