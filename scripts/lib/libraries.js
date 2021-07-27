@@ -1,7 +1,7 @@
-const backdrops = require('openblock-gui/src/lib/libraries/backdrops.json');
-const costumes = require('openblock-gui/src/lib/libraries/costumes.json');
-const sounds = require('openblock-gui/src/lib/libraries/sounds.json');
-const sprites = require('openblock-gui/src/lib/libraries/sprites.json');
+const backdrops = require('@delightmom/scratch-gui/src/lib/libraries/backdrops.json');
+const costumes = require('@delightmom/scratch-gui/src/lib/libraries/costumes.json');
+const sounds = require('@delightmom/scratch-gui/src/lib/libraries/sounds.json');
+const sprites = require('@delightmom/scratch-gui/src/lib/libraries/sprites.json');
 
 const libraries = {
     backdrops,

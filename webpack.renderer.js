@@ -17,6 +17,7 @@ module.exports = defaultConfig =>
                 path.resolve(__dirname, 'src', 'renderer'),
                 /node_modules[\\/]+scratch-[^\\/]+[\\/]+src/,
                 /node_modules[\\/]+openblock-[^\\/]+[\\/]+src/,
+                /node_modules[\\/]+@delightmom\/scratch-[^\\/]+[\\/]+src/,
                 /node_modules[\\/]+pify/,
                 /node_modules[\\/]+@vernier[\\/]+godirect/
             ],
@@ -30,7 +31,7 @@ module.exports = defaultConfig =>
                     context: path.join(getModulePath('openblock-vm'), 'dist', 'web')
                 }]),
                 new CopyWebpackPlugin([{
-                    from: path.join(getModulePath('openblock-gui'), 'src', 'lib', 'libraries', '*.json'),
+                    from: path.join(getModulePath('@delightmom/scratch-gui'), 'src', 'lib', 'libraries', '*.json'),
                     to: 'static/libraries',
                     flatten: true
                 }])
