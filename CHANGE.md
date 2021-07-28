@@ -13,7 +13,7 @@
 
     1. When loading a project with a extension, an error will be reported and cannot be loaded.
     2. The input box of the variable increase block is parsed incorrectly when other blocks or variables are placed.
-    3. In the double-numbered character, the movement blocks in the toolbox area will not automatically change to the coordinates of the character's current position.
+    3. In the even sprite, the movement blocks in the toolbox area will not automatically change to the coordinates of the character's current position.
     4. Fix the problem that esp32 and esp8266 cannot start after clicking the reset button when connecting to openblock due to the lack of serial port to enable dtr rts flow control.
     5. After connecting and disconnecting the device once in upload mode, no matter what mode is connected to the device again, it will not be able to establish communication with the connection firmata.
     6. ESP32 and ESP8266 will get stuck for a long time between compiling and uploading.
