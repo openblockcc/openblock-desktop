@@ -1,5 +1,12 @@
 # Change Log
 
+## v2.2.3
+
+- **Fix bug**
+
+    1. When you double-click to open the project file with the selected device, an error will occur in loading.
+    2. After add comment for device extension block and save the project file. If try to load the project after restart the software, there is another comment window appear which cannot able to delete.
+
 ## v2.2.2
 
 - **New feature**
