@@ -1,5 +1,12 @@
 # Change Log
 
+## v2.2.4
+
+- **Fix bug**
+
+    1. There is no A0 ~ A5 option for the read digital pin blocks of control boards such as Arduino UNO.
+    2. After using the shortcut key Ctrl + Z to modify blocks, the code on the right side is not updated.
+
 ## v2.2.3
 
 - **Fix bug**
