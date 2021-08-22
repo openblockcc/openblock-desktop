@@ -4,7 +4,7 @@ directories:
 extraResources: ["tools", "external-resources", 'firmwares', "statics", "drivers"]
 
 appId: openblock.cc.openblock-desktop
-productName: "OpenBlock"
+productName: "Dbit+"
 publish: # empty provider list = don't publish
 
 fileAssociations:

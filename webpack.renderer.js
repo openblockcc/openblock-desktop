@@ -16,8 +16,8 @@ module.exports = defaultConfig =>
             babelPaths: [
                 path.resolve(__dirname, 'src', 'renderer'),
                 /node_modules[\\/]+scratch-[^\\/]+[\\/]+src/,
-                /node_modules[\\/]+openblock-[^\\/]+[\\/]+src/,
-                /node_modules[\\/]+@delightmom\/scratch-[^\\/]+[\\/]+src/,
+                /node_modules[\\/]+delightmom-[^\\/]+[\\/]+src/,
+                /node_modules[\\/]+delightmom-scratch-[^\\/]+[\\/]+src/,
                 /node_modules[\\/]+pify/,
                 /node_modules[\\/]+@vernier[\\/]+godirect/
             ],

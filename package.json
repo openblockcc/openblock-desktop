@@ -1,9 +1,9 @@
 {
   "name": "openblock-desktop",
-  "productName": "Openblock",
-  "description": "Openblock as a self-contained desktop application",
-  "author": "Openblock Team",
-  "version": "2.2.1",
+  "productName": "Dbit+",
+  "description": "Dbit+ as a self-contained desktop application",
+  "author": "bjppss",
+  "version": "0.1.0",
   "license": "MIT",
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
@@ -15,8 +15,8 @@
     "compile": "mkdirp ./dist && electron-webpack --bail --display-error-details --env.minify=false --no-progress",
     "fetch:drivers": "rimraf ./drivers && node scripts/download-driver.js",
     "fetch:exts": "rimraf ./external-resources && node ./node_modules/openblock-resource/script/download.js",
-    "fetch:firmwares": "rimraf ./firmwares && node ./node_modules/openblock-link/script/download-firmwares.js",
-    "fetch:tools": "rimraf ./tools && node ./node_modules/openblock-link/script/download-tools.js",
+    "fetch:firmwares": "rimraf ./firmwares && node ./node_modules/delightmom-scratch-link/script/download-firmwares.js",
+    "fetch:tools": "rimraf ./tools && node ./node_modules/delightmom-scratch-link/script/download-tools.js",
     "fetch:statics": "rimraf ./statics && mkdirp ./statics && git clone https://github.com/openblockcc/openblock-asset.git statics",
     "fetch:all": "npm run fetch:drivers && npm run fetch:exts && npm run fetch:firmwares && npm run fetch:tools && npm run fetch:statics",
     "fetch:all32": "npm run fetch:drivers && npm run fetch:exts && npm run fetch:firmwares && npm run fetch:tools -- --arch=ia32 && npm run fetch:statics",
@@ -30,11 +30,12 @@
     "dist32": "npm run clean && npm run compile && npm run fetch:all32 && npm run doBuild -- --mode=dist --arch=ia32",
     "distDev": "npm run clean && npm run compile && npm run fetch:all && npm run doBuild -- --mode=dev",
     "test": "npm run test:lint",
-    "test:lint": "eslint --cache --color --ext .jsx,.js src scripts"
+    "test:lint": "eslint --cache --color --ext .jsx,.js src scripts",
+    "link": "npm link delightmom-scratch-gui delightmom-scratch-l10n"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/openblockcc/openblock-desktop.git"
+    "url": "git+ssh://git@github.com/LLK/scratch-desktop.git"
   },
   "dependencies": {
     "openblock-link": "0.1.0-prerelease.20210722055803",
@@ -80,8 +81,8 @@
     "nets": "^3.2.0",
     "node-localstorage": "^2.1.6",
     "npm-force-resolutions": "0.0.10",
-    "delightmom-scratch-gui": "Dbit+-v1.0.0",
-    "delightmom-scratch-l10n": "latest",
+    "delightmom-scratch-gui": "Dbit+-v1.0.1",
+    "delightmom-scratch-l10n": "0.1.0",
     "os-locale": "^5.0.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
