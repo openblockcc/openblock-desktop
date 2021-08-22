@@ -19,7 +19,7 @@ const EVENT_TEMPLATE = {
     }
 };
 
-const APP_ID = 'openblock-desktop';
+const APP_ID = 'dilemu-desktop';
 const APP_VERSION = app.getVersion();
 const APP_INFO = Object.freeze({
     projectName: `${APP_ID} ${APP_VERSION}`
