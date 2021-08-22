@@ -6,11 +6,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import GUI from '@delightmom/scratch-gui/src/index';
-import VM from 'openblock-vm';
+import GUI from 'delightmom-scratch-gui/src/index';
+import VM from 'delightmom-scratch-vm';
 
-import analytics, {initialAnalytics} from '@delightmom/scratch-gui/src/lib/analytics';
-import AppStateHOC from '@delightmom/scratch-gui/src/lib/app-state-hoc.jsx';
+import analytics, {initialAnalytics} from 'delightmom-scratch-gui/src/lib/analytics';
+import AppStateHOC from 'delightmom-scratch-gui/src/lib/app-state-hoc.jsx';
 import {
     LoadingStates,
     onFetchedProjectData,
@@ -19,13 +19,13 @@ import {
     requestNewProject,
     requestProjectUpload,
     setProjectId
-} from '@delightmom/scratch-gui/src/reducers/project-state';
+} from 'delightmom-scratch-gui/src/reducers/project-state';
 import {
     openLoadingProject,
     closeLoadingProject,
     openUpdateModal
-} from '@delightmom/scratch-gui/src/reducers/modals';
-import {setUpdate} from '@delightmom/scratch-gui/src/reducers/update';
+} from 'delightmom-scratch-gui/src/reducers/modals';
+import {setUpdate} from 'delightmom-scratch-gui/src/reducers/update';
 
 import ElectronStorageHelper from '../common/ElectronStorageHelper';
 

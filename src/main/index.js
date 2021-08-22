@@ -20,7 +20,7 @@ import compareVersions from 'compare-versions';
 import del from 'del';
 
 import formatMessage from 'format-message';
-import locales from 'openblock-l10n/locales/desktop-msgs';
+import locales from 'delightmom-scratch-l10n/locales/desktop-msgs';
 import osLocale from 'os-locale';
 
 import OpenBlockLink from 'openblock-link';

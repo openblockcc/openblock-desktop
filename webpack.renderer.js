@@ -23,15 +23,15 @@ module.exports = defaultConfig =>
             ],
             plugins: [
                 new CopyWebpackPlugin([{
-                    from: path.join(getModulePath('openblock-blocks'), 'media'),
+                    from: path.join(getModulePath('delightmom-scratch-blocks'), 'media'),
                     to: 'static/blocks-media'
                 }]),
                 new CopyWebpackPlugin([{
                     from: 'extension-worker.{js,js.map}',
-                    context: path.join(getModulePath('openblock-vm'), 'dist', 'web')
+                    context: path.join(getModulePath('delightmom-scratch-vm'), 'dist', 'web')
                 }]),
                 new CopyWebpackPlugin([{
-                    from: path.join(getModulePath('@delightmom/scratch-gui'), 'src', 'lib', 'libraries', '*.json'),
+                    from: path.join(getModulePath('delightmom-scratch-gui'), 'src', 'lib', 'libraries', '*.json'),
                     to: 'static/libraries',
                     flatten: true
                 }])
