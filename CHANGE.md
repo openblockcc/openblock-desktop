@@ -1,5 +1,15 @@
 # Change Log
 
+## v2.2.5
+
+- **Fix bug**
+
+    1. Because shield in openblock-resource source code is misspelled as sheild, shield filter in GUI interface is null.
+    2. In VM, one more line of startheartbeat function call is written, and startheartbeat repeats reentry, resulting in real-time communication error.
+    3. Add rtscts flow control configuration to repair the situation that some three-party compatible boards cannot be used when opening rtscts flow control.
+    4. Cannot edit input-box after the alert or confirm window pops up.
+    5. The device selection is not cleared after a new project is created.
+
 ## v2.2.4
 
 - **Fix bug**
