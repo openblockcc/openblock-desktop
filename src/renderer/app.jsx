@@ -10,6 +10,7 @@ import GUI from 'openblock-gui/src/index';
 import VM from 'openblock-vm';
 
 import analytics, {initialAnalytics} from 'openblock-gui/src/lib/analytics';
+import MessageBoxType from 'openblock-gui/src/lib/message-box.js';
 import AppStateHOC from 'openblock-gui/src/lib/app-state-hoc.jsx';
 import {
     LoadingStates,
@@ -54,6 +55,7 @@ const ScratchDesktopHOC = function (WrappedComponent) {
                 'handleProjectTelemetryEvent',
                 'handleSetTitleFromSave',
                 'handleStorageInit',
+                'handleShowMessageBox',
                 'handleTelemetryModalOptIn',
                 'handleTelemetryModalOptOut',
                 'handleUpdateProjectTitle'
@@ -93,6 +95,7 @@ const ScratchDesktopHOC = function (WrappedComponent) {
                     }
                 );
             });
+            this.platform = null;
         }
         componentDidMount () {
             ipcRenderer.on('setTitleFromSave', this.handleSetTitleFromSave);
@@ -103,6 +106,9 @@ const ScratchDesktopHOC = function (WrappedComponent) {
                 initialAnalytics(args);
                 // Register "base" page view
                 analytics.pageview('/', null, 'desktop');
+            });
+            ipcRenderer.on('setPlatform', (event, args) => {
+                this.platform = args;
             });
         }
         componentWillUnmount () {
@@ -132,6 +138,36 @@ const ScratchDesktopHOC = function (WrappedComponent) {
         handleStorageInit (storageInstance) {
             storageInstance.addHelper(new ElectronStorageHelper(storageInstance));
         }
+        handleShowMessageBox (type, message) {
+            /**
+             * To avoid the electron bug: the input-box lose focus after call alert or confirm on windows platform.
+             * https://github.com/electron/electron/issues/19977
+            */
+            if (this.platform === 'win32') {
+                let options;
+                if (type === MessageBoxType.confirm) {
+                    options = {
+                        type: 'warning',
+                        buttons: ['Ok', 'Cancel'],
+                        message: message
+                    };
+                } else if (type === MessageBoxType.alert) {
+                    options = {
+                        type: 'error',
+                        message: message
+                    };
+                }
+                const result = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), options);
+                if (result === 0) {
+                    return true;
+                }
+                return false;
+            }
+            if (type === 'confirm') {
+                return confirm(message); // eslint-disable-line no-alert
+            }
+            return alert(message); // eslint-disable-line no-alert
+        }
         handleTelemetryModalOptIn () {
             ipcRenderer.send('setTelemetryDidOptIn', true);
         }
@@ -158,6 +194,7 @@ const ScratchDesktopHOC = function (WrappedComponent) {
                 onClickClearCache={this.handleClickClearCache}
                 onProjectTelemetryEvent={this.handleProjectTelemetryEvent}
                 onStorageInit={this.handleStorageInit}
+                onShowMessageBox={this.handleShowMessageBox}
                 onTelemetryModalOptIn={this.handleTelemetryModalOptIn}
                 onTelemetryModalOptOut={this.handleTelemetryModalOptOut}
                 onUpdateProjectTitle={this.handleUpdateProjectTitle}
