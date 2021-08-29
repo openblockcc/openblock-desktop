@@ -9,6 +9,7 @@
     3. Add rtscts flow control configuration to repair the situation that some three-party compatible boards cannot be used when opening rtscts flow control.
     4. Cannot edit input-box after the alert or confirm window pops up.
     5. The device selection is not cleared after a new project is created.
+    6. The old device is not disconnected after a new project is created.
 
 ## v2.2.4
 
