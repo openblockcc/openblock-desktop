@@ -5,6 +5,9 @@ on:
     branches: [ main ]
     tags:
       - 'v*'
+    paths-ignore:
+      - 'README.md'
+      - 'doc/*'
 
 jobs:
   build-windows:
