@@ -1,5 +1,13 @@
 # Change Log
 
+## v2.2.6
+
+- **Fix bug**
+
+    1. The newline parameter of arduino mega2560 serial send block does not take effect.
+    2. After creating a new sprite, the device selection is cleared.
+    3. An error occurs after load a project file that contains multiple device extensions.
+
 ## v2.2.5
 
 - **Fix bug**
