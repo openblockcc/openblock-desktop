@@ -6,7 +6,7 @@
 
     1. After loading the project file, save the project file again and load it, there will be an error and the project cannot be loaded.
     2. After loading the project file, click the new project button, and the interface will crash.
-    3. When opening the device extension interface, it freezes for 1~2 seconds before loading data.
+    3. When opening the extension interface in upload mode, it will freeze for 1~2 seconds before the extension options are loaded.
 
 ## v2.2.6
 
