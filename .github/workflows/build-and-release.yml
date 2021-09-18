@@ -7,6 +7,7 @@ on:
       - 'v*'
     paths-ignore:
       - 'README.md'
+      - 'CHANGE.md'
       - 'doc/*'
 
 jobs:
