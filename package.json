@@ -3,7 +3,7 @@
   "productName": "Openblock",
   "description": "Openblock as a self-contained desktop application",
   "author": "Openblock Team",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "license": "MIT",
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "openblock-link": "0.1.0-prerelease.20210822175948",
-    "openblock-resource": "0.1.0-prerelease.20210902130058",
+    "openblock-resource": "0.1.0-prerelease.20210918043733",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
@@ -80,7 +80,7 @@
     "nets": "^3.2.0",
     "node-localstorage": "^2.1.6",
     "npm-force-resolutions": "0.0.10",
-    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.2.6",
+    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.2.7",
     "openblock-l10n": "^3.10.20210714115626",
     "os-locale": "^5.0.0",
     "react": "^16.14.0",

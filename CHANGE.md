@@ -1,5 +1,13 @@
 # Change Log
 
+## v2.2.7
+
+- **Fix bug**
+
+    1. After loading the project file, save the project file again and load it, there will be an error and the project cannot be loaded.
+    2. After loading the project file, click the new project button, and the interface will crash.
+    3. When opening the device extension interface, it freezes for 1~2 seconds before loading data.
+
 ## v2.2.6
 
 - **Fix bug**
