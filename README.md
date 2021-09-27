@@ -1,6 +1,6 @@
 # openblock-desktop
 
-[![Build and release](https://github.com/openblockcc/openblock-desktop/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/openblockcc/openblock-desktop/actions/workflows/build-and-release.yml) ![GitHub all releases](https://img.shields.io/github/downloads/openblockcc/openblock-desktop/total) [![Gitter](https://badges.gitter.im/openblockcc/community.svg)](https://gitter.im/openblockcc/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Build and release](https://github.com/openblockcc/openblock-desktop/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/openblockcc/openblock-desktop/actions/workflows/build-and-release.yml) ![GitHub all releases](https://img.shields.io/github/downloads/openblockcc/openblock-desktop/total) [![Gitter](https://badges.gitter.im/openblockcc/community.svg)](https://gitter.im/openblockcc/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![ko-fi](https://img.shields.io/badge/donate-sponsors-ea4aaa.svg?logo=ko-fi)](https://ko-fi.com/X8X66DATO)
 
 OpenBlock as a standalone desktop application.
 
@@ -18,6 +18,16 @@ Visit the wiki on gitee (mirror): [https://openblockcc.gitee.io/wiki/main](https
 - Gitter: [https://gitter.im/openblockcc/community](https://gitter.im/openblockcc/community?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
 
 - Chinese QQ group: 933484739
+
+## Donate
+
+- Ko-fi:
+
+    [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X8X66DATO)
+
+- Alipay:
+
+    ![alipayQRCode](./doc/alipayQRCode.png)
 
 ## Bug Report
 
