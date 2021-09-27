@@ -9,6 +9,7 @@ on:
       - 'README.md'
       - 'CHANGE.md'
       - 'doc/*'
+      - '.github/*'
 
 jobs:
   build-windows:
