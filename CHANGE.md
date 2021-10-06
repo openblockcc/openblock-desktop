@@ -12,7 +12,7 @@
     2. After loading a new project file, if the project does not have a device extension, the code area will be empty.
     3. When connecting to a device without fimata service, there will be no alert prompt to download the firmware.
     4. Optimize the firmata communication architecture in real-time mode to fix some potential problems.
-    5. Fix the misspelled device configuration name from leanMore to learnMorern.
+    5. Fix the misspelled device configuration name from leanMore to learnMore.
     6. Fix the inaccurate meaning of Arduino block name from whole number to integer.
 
 ## v2.2.7
