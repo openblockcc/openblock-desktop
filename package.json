@@ -1,8 +1,8 @@
 {
   "name": "openblock-desktop",
-  "productName": "Openblock",
-  "description": "Openblock as a self-contained desktop application",
-  "author": "Openblock Team",
+  "productName": "OpenBlock",
+  "description": "OpenBlock as a self-contained desktop application",
+  "author": "Openblock.cc Team",
   "version": "2.2.8",
   "license": "MIT",
   "scripts": {
