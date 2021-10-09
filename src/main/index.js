@@ -409,7 +409,7 @@ const createMainWindow = () => {
         webContents.send('setPlatform', process.platform);
     });
     ipcMain.on('reqeustCheckUpdate', () => {
-        resourceServer.checkUpdate()
+        resourceServer.checkUpdate(locale)
             .then(info => {
                 if (info) {
                     webContents.send('setUpdate', {phase: 'idle', version: info.version, describe: info.describe});
