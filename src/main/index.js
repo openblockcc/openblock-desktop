@@ -458,6 +458,12 @@ app.on('will-quit', () => {
     telemetry.appWillClose();
 });
 
+app.on('activate', () => {
+    if (_windows.main === null) {
+        createMainWindow();
+    }
+});
+
 // work around https://github.com/MarshallOfSound/electron-devtools-installer/issues/122
 // which seems to be a result of https://github.com/electron/electron/issues/19468
 if (process.platform === 'win32') {
@@ -470,100 +476,114 @@ if (process.platform === 'win32') {
     }
 }
 
-// create main BrowserWindow when electron is ready
-app.on('ready', () => {
-    if (isDevelopment) {
-        import('electron-devtools-installer').then(importedModule => {
-            const {default: installExtension, ...devToolsExtensions} = importedModule;
-            const extensionsToInstall = [
-                devToolsExtensions.REACT_DEVELOPER_TOOLS,
-                devToolsExtensions.REACT_PERF,
-                devToolsExtensions.REDUX_DEVTOOLS
-            ];
-            for (const extension of extensionsToInstall) {
+const gotTheLock = app.requestSingleInstanceLock();
+if (gotTheLock) {
+    app.on('second-instance', () => {
+        // Someone tried to run a second instance, we should focus our window.
+        if (_windows) {
+            if (_windows.main.isMinimized()) _windows.main.restore();
+            _windows.main.focus();
+            _windows.main.show();
+        }
+    });
+
+    // create main BrowserWindow when electron is ready
+    app.on('ready', () => {
+        if (isDevelopment) {
+            import('electron-devtools-installer').then(importedModule => {
+                const {default: installExtension, ...devToolsExtensions} = importedModule;
+                const extensionsToInstall = [
+                    devToolsExtensions.REACT_DEVELOPER_TOOLS,
+                    devToolsExtensions.REACT_PERF,
+                    devToolsExtensions.REDUX_DEVTOOLS
+                ];
+                for (const extension of extensionsToInstall) {
                 // WARNING: depending on a lot of things including the version of Electron `installExtension` might
                 // return a promise that never resolves, especially if the extension is already installed.
-                installExtension(extension).then(
-                    extensionName => log(`Installed dev extension: ${extensionName}`),
-                    errorMessage => log.error(`Error installing dev extension: ${errorMessage}`)
-                );
-            }
+                    installExtension(extension).then(
+                        extensionName => log(`Installed dev extension: ${extensionName}`),
+                        errorMessage => log.error(`Error installing dev extension: ${errorMessage}`)
+                    );
+                }
+            });
+        }
+
+        formatMessage.setup({
+            locale: locale,
+            // eslint-disable-next-line global-require
+            translations: locales
         });
-    }
 
-    formatMessage.setup({
-        locale: locale,
-        // eslint-disable-next-line global-require
-        translations: locales
-    });
+        const userDataPath = app.getPath(
+            'userData'
+        );
+        const dataPath = path.join(userDataPath, 'Data');
 
-    const userDataPath = app.getPath(
-        'userData'
-    );
-    const dataPath = path.join(userDataPath, 'Data');
+        const appPath = app.getAppPath();
 
-    const appPath = app.getAppPath();
+        const appVersion = app.getVersion();
 
-    const appVersion = app.getVersion();
-
-    // if current version is newer then cache log, delet the data cache dir and write the
-    // new version into the cache file.
-    const oldVersion = nodeStorage.getItem('version');
-    if (oldVersion) {
-        if (compareVersions.compare(appVersion, oldVersion, '>')) {
-            if (fs.existsSync(dataPath)) {
-                del.sync([dataPath], {force: true});
+        // if current version is newer then cache log, delet the data cache dir and write the
+        // new version into the cache file.
+        const oldVersion = nodeStorage.getItem('version');
+        if (oldVersion) {
+            if (compareVersions.compare(appVersion, oldVersion, '>')) {
+                if (fs.existsSync(dataPath)) {
+                    del.sync([dataPath], {force: true});
+                }
+                nodeStorage.setItem('version', appVersion);
             }
+        } else {
             nodeStorage.setItem('version', appVersion);
         }
-    } else {
-        nodeStorage.setItem('version', appVersion);
-    }
 
-    let resourcePath;
-    if (appPath.search(/app/g) !== -1) {
-        resourcePath = path.join(appPath, '../');
-    } else if (appPath.search(/main/g) !== -1) { // eslint-disable-line no-negated-condition
-        resourcePath = path.join(appPath, '../../');
-    } else {
-        resourcePath = path.join(appPath);
-    }
-
-    // start link server
-    const link = new OpenBlockLink(dataPath, path.join(resourcePath, 'tools'));
-    link.listen();
-
-    // start resource server
-    resourceServer = new OpenblockResourceServer(dataPath, path.join(resourcePath, 'external-resources'));
-    resourceServer.listen();
-
-    ipcMain.on('clearCache', () => {
-        del.sync(dataPath, {force: true});
-        app.relaunch();
-        app.exit();
-    });
-
-    ipcMain.on('installDriver', () => {
-        const driverPath = path.join(resourcePath, 'drivers');
-        if ((os.platform() === 'win32') && (os.arch() === 'x64')) {
-            execFile('install_x64.bat', [], {cwd: driverPath});
-        } else if ((os.platform() === 'win32') && (os.arch() === 'ia32')) {
-            execFile('install_x86.bat', [], {cwd: driverPath});
-        } else if ((os.platform() === 'darwin')) {
-            spawn('sh', ['install.sh'], {shell: true, cwd: driverPath});
+        let resourcePath;
+        if (appPath.search(/app/g) !== -1) {
+            resourcePath = path.join(appPath, '../');
+        } else if (appPath.search(/main/g) !== -1) { // eslint-disable-line no-negated-condition
+            resourcePath = path.join(appPath, '../../');
+        } else {
+            resourcePath = path.join(appPath);
         }
-    });
 
-    _windows.main = createMainWindow();
-    _windows.main.on('closed', () => {
-        delete _windows.main;
+        // start link server
+        const link = new OpenBlockLink(dataPath, path.join(resourcePath, 'tools'));
+        link.listen();
+
+        // start resource server
+        resourceServer = new OpenblockResourceServer(dataPath, path.join(resourcePath, 'external-resources'));
+        resourceServer.listen();
+
+        ipcMain.on('clearCache', () => {
+            del.sync(dataPath, {force: true});
+            app.relaunch();
+            app.exit();
+        });
+
+        ipcMain.on('installDriver', () => {
+            const driverPath = path.join(resourcePath, 'drivers');
+            if ((os.platform() === 'win32') && (os.arch() === 'x64')) {
+                execFile('install_x64.bat', [], {cwd: driverPath});
+            } else if ((os.platform() === 'win32') && (os.arch() === 'ia32')) {
+                execFile('install_x86.bat', [], {cwd: driverPath});
+            } else if ((os.platform() === 'darwin')) {
+                spawn('sh', ['install.sh'], {shell: true, cwd: driverPath});
+            }
+        });
+
+        _windows.main = createMainWindow();
+        _windows.main.on('closed', () => {
+            delete _windows.main;
+        });
+        _windows.about = createAboutWindow();
+        _windows.about.on('close', event => {
+            event.preventDefault();
+            _windows.about.hide();
+        });
     });
-    _windows.about = createAboutWindow();
-    _windows.about.on('close', event => {
-        event.preventDefault();
-        _windows.about.hide();
-    });
-});
+} else {
+    app.quit();
+}
 
 ipcMain.on('open-about-window', () => {
     _windows.about.show();
