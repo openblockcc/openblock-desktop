@@ -3,7 +3,7 @@
   "productName": "OpenBlock Desktop",
   "description": "OpenBlock as a self-contained desktop application",
   "author": "Openblock.cc Team",
-  "version": "2.2.8",
+  "version": "2.2.9",
   "license": "MIT",
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
