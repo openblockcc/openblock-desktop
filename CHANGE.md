@@ -1,5 +1,22 @@
 # Change Log
 
+## v2.2.9
+
+- **New feature**
+
+    1. Optimize the windows nsis installation script. Now the first installation path will be set to the root directory of the c drive, and the subsequent installation path will be automatically detected and modified to the installation directory selected during the first installation.
+    2. Add support for original scratch project files.
+    3. Add the devil bird to the sprite and custom library.
+
+- **Fix bug**
+
+    1. Switching the programming mode while the sprite is speaking will cause the interface to crash.
+    2. When loading a project file containing custom list variables, an error will be reported that the loading cannot be completed.
+    3. The parameter blocks of custom functions will be disabled when switching modes.
+    4. The serial port data of esp32 and microbit is not displayed in the terminal.
+    5. Correct the programming language icon of esp32/8266.
+    6. Correct the center coordinates of the demon bird's rotation.
+
 ## v2.2.8
 
 - **New feature**
@@ -194,38 +211,38 @@
 
 - **Fix bug**
 
-	1. Third party's block which from vm code generator error.
+    1. Third party's block which from vm code generator error.
 
 ## v1.2.0beta
 
 - **New feature**
 
-	1. Now most alert will automaticly disapear after 5s.
-	2. Completed the blocks of microbit.
-	3. Add a servo extension as demo for microbit.
-	4. After installing the new version of the software, the old cache will be cleared automatically.
+    1. Now most alert will automaticly disapear after 5s.
+    2. Completed the blocks of microbit.
+    3. Add a servo extension as demo for microbit.
+    4. After installing the new version of the software, the old cache will be cleared automatically.
 
 - **New  device/kit**
 
-	1. Arduino Mini
-	2. QDP Robot(齐护机器人) kit
+    1. Arduino Mini
+    2. QDP Robot(齐护机器人) kit
 
 - **Fix bug**
 
-	1. Error usb hardware id of cp2102.
-	2. Error translation of microbit.
-	3. Cannot scan to devices after loading a project.
-	4. The loaded device extension still exists after switching the device selection.
+    1. Error usb hardware id of cp2102.
+    2. Error translation of microbit.
+    3. Cannot scan to devices after loading a project.
+    4. The loaded device extension still exists after switching the device selection.
 
 ## v1.1.0beta
 
 - **New feature**
 
-	1. Blocks could over flow the flyout boundary when mouse enter.
-	2. Extension can be auto loaded when device selected.
+    1. Blocks could over flow the flyout boundary when mouse enter.
+    2. Extension can be auto loaded when device selected.
 
 - **New device/kit**
 
-	1. microbit
-	2. iron robot kit
+    1. microbit
+    2. iron robot kit
 
