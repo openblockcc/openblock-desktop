@@ -32,3 +32,18 @@ done:
     ${EndIf}
 
 !macroend
+
+!macro customUnInstall
+
+    ${If} ${RunningX64}
+        SetRegView 64
+    ${EndIf}
+
+    DeleteRegKey HKLM "${INSTALL_REGISTRY_KEY}"
+    DeleteRegKey HKCU "${INSTALL_REGISTRY_KEY}"
+
+    ${If} ${RunningX64}
+        SetRegView LastUsed
+    ${EndIf}
+
+ !macroend
