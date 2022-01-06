@@ -57,7 +57,7 @@
     "cpx": "^1.5.0",
     "del": "^6.0.0",
     "download-github-release": "^0.3.2",
-    "electron": "^8.5.5",
+    "electron": "^11.5.0",
     "electron-builder": "^22.11.7",
     "electron-devtools-installer": "^3.0.0",
     "electron-notarize": "^0.3.0",
