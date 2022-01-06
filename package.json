@@ -6,7 +6,6 @@
   "version": "2.2.9",
   "license": "MIT",
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "postinstall": "electron-builder install-app-deps",
     "clean": "rimraf ./dist ./statics ./external-resources ./tools ./translations ./firmwares ./drivers",
     "i18n:src": "mkdirp translations/core && format-message extract --out-file translations/core/en.json src/main/**.js",
@@ -57,11 +56,11 @@
     "cpx": "^1.5.0",
     "del": "^6.0.0",
     "download-github-release": "^0.3.2",
-    "electron": "^8.5.5",
-    "electron-builder": "^22.11.7",
-    "electron-devtools-installer": "^3.0.0",
-    "electron-notarize": "^0.3.0",
-    "electron-store": "^5.1.1",
+    "electron": "^15.3.1",
+    "electron-builder": "^22.13.1",
+    "electron-devtools-installer": "^3.2.0",
+    "electron-notarize": "^1.1.1",
+    "electron-store": "^8.0.1",
     "electron-webpack": "^2.8.2",
     "eslint": "^7.0.0",
     "eslint-config-scratch": "^6.0.0",
@@ -88,10 +87,8 @@
     "react-intl": "2.9.0",
     "react-redux": "5.0.7",
     "redux": "3.7.2",
+    "rimraf": "^3.0.2",
     "uuid": "^8.3.2",
     "webpack": "^4.43.0"
-  },
-  "resolutions": {
-    "usb": "1.6.5"
   }
 }
