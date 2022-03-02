@@ -23,7 +23,7 @@ jobs:
           node-version: '14.x'
 
       - name: Npm Install
-        run: npm install
+        run: npm ci
 
       - name: Build Dist
         env:
@@ -195,4 +195,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: checksums.txt
           asset_name: ${{ steps.package-version.outputs.current-version }}-checksums-sha256.txt
-          asset_content_type: application/zip
+          asset_content_type: text/plain
