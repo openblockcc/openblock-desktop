@@ -1,0 +1,18 @@
+diff --git a/node_modules/app-builder-lib/scheme.json b/node_modules/app-builder-lib/scheme.json
+index 685d59f..640b162 100644
+--- a/node_modules/app-builder-lib/scheme.json
++++ b/node_modules/app-builder-lib/scheme.json
+@@ -1398,6 +1398,13 @@
+       "additionalProperties": false,
+       "description": "[GitHub](https://help.github.com/articles/about-releases/) options.\n\nGitHub [personal access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) is required. You can generate by going to [https://github.com/settings/tokens/new](https://github.com/settings/tokens/new). The access token should have the repo scope/permission.\nDefine `GH_TOKEN` environment variable.",
+       "properties": {
++        "cdn": {
++            "description": "Set the cdn url if need",
++            "type": [
++              "null",
++              "string"
++            ]
++        },
+         "host": {
+           "default": "github.com",
+           "description": "The host (including the port if need).",

@@ -1,0 +1,16 @@
+diff --git a/node_modules/electron-publish/out/gitHubPublisher.js b/node_modules/electron-publish/out/gitHubPublisher.js
+index b4469f8..de99311 100644
+--- a/node_modules/electron-publish/out/gitHubPublisher.js
++++ b/node_modules/electron-publish/out/gitHubPublisher.js
+@@ -200,9 +200,9 @@ class GitHubPublisher extends publisher_1.HttpPublisher {
+         // host can contains port, but node http doesn't support host as url does
+         const baseUrl = url_1.parse(`https://${this.info.host || "api.github.com"}`);
+         return builder_util_runtime_1.parseJson(nodeHttpExecutor_1.httpExecutor.request(builder_util_runtime_1.configureRequestOptions({
+-            hostname: baseUrl.hostname,
++            hostname: this.info.cdn != null ? this.info.cdn : baseUrl.hostname,
+             port: baseUrl.port,
+-            path: this.info.host != null && this.info.host !== "github.com" ? `/api/v3${path.startsWith("/") ? path : `/${path}`}` : path,
++            path: this.info.host != null && this.info.host !== "github.com" ? `/api/v3${path.startsWith("/") ? path : `/${path}`}` : `${this.info.cdn != null ? `/${baseUrl.protocol}//${baseUrl.hostname}${path}` : path}`,
+             headers: { accept: "application/vnd.github.v3+json" },
+         }, token, method), this.context.cancellationToken, data));
+     }

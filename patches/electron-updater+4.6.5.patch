@@ -1,0 +1,37 @@
+diff --git a/node_modules/electron-updater/out/providers/GitHubProvider.js b/node_modules/electron-updater/out/providers/GitHubProvider.js
+index 9348b20..7cc66fe 100644
+--- a/node_modules/electron-updater/out/providers/GitHubProvider.js
++++ b/node_modules/electron-updater/out/providers/GitHubProvider.js
+@@ -15,9 +15,10 @@ class BaseGitHubProvider extends Provider_1.Provider {
+             isUseMultipleRangeRequest: false,
+         });
+         this.options = options;
+-        this.baseUrl = util_1.newBaseUrl(builder_util_runtime_1.githubUrl(options, defaultHost));
+-        const apiHost = defaultHost === "github.com" ? "api.github.com" : defaultHost;
+-        this.baseApiUrl = util_1.newBaseUrl(builder_util_runtime_1.githubUrl(options, apiHost));
++        this.defaultHost = defaultHost;
++        this.baseUrl = `${options.cdn != null ? `${util_1.newBaseUrl(builder_util_runtime_1.githubUrl(options, options.cdn))}` : `${util_1.newBaseUrl(builder_util_runtime_1.githubUrl(options, defaultHost))}`}`;
++        this.apiHost = defaultHost === "github.com" ? "api.github.com" : defaultHost;
++        this.baseApiUrl = `${options.cdn != null? `${util_1.newBaseUrl(builder_util_runtime_1.githubUrl(options, options.cdn))}` : `${util_1.newBaseUrl(builder_util_runtime_1.githubUrl(options, this.apiHost))}`}`;
+     }
+     computeGithubBasePath(result) {
+         // https://github.com/electron-userland/electron-builder/issues/1903#issuecomment-320881211
+@@ -93,7 +94,7 @@ class GitHubProvider extends BaseGitHubProvider {
+         // do not use API for GitHub to avoid limit, only for custom host or GitHub Enterprise
+         const url = options.host == null || options.host === "github.com"
+             ? util_1.newUrlFromBase(`${this.basePath}/latest`, this.baseUrl)
+-            : new url_1.URL(`${this.computeGithubBasePath(`/repos/${options.owner}/${options.repo}/releases`)}/latest`, this.baseApiUrl);
++            : new url_1.URL(`${options.cdn != null ? `${builder_util_runtime_1.githubUrl(this.options, this.apiHost)}`: ``}` + `${this.computeGithubBasePath(`/repos/${options.owner}/${options.repo}/releases`)}/latest`, this.baseApiUrl);
+         try {
+             const rawData = await this.httpRequest(url, { Accept: "application/json" }, cancellationToken);
+             if (rawData == null) {
+@@ -107,6 +108,9 @@ class GitHubProvider extends BaseGitHubProvider {
+         }
+     }
+     get basePath() {
++        if (this.options.cdn) {
++            return `/${builder_util_runtime_1.githubUrl(this.options, this.defaultHost)}/${this.options.owner}/${this.options.repo}/releases`;
++        }
+         return `/${this.options.owner}/${this.options.repo}/releases`;
+     }
+     resolveFiles(updateInfo) {
