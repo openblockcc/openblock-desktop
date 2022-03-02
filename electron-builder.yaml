@@ -5,7 +5,9 @@ extraResources: ["tools", "external-resources", 'firmwares', "statics", "drivers
 
 appId: openblock.cc.openblock-desktop
 productName: "OpenBlock Desktop"
-publish: # empty provider list = don't publish
+publish:
+  provider: github
+  cdn: cdn.openblock.cc
 
 fileAssociations:
   ext: ob
@@ -25,12 +27,12 @@ mac:
   hardenedRuntime: true
   icon: buildResources/OpenBlockDesktop.icns
   provisioningProfile: embedded.provisionprofile
-  artifactName: "OpenBlock Desktop ${version}.${ext}"
+  artifactName: "OpenBlock-Desktop_${version}.${ext}"
   target:
     - dmg
     # - mas
 dmg:
-  title: "OpenBlock Desktop ${version}"
+  title: "OpenBlock-Desktop_${version}"
 # mas:
 #   category: public.app-category.education
 #   entitlements: buildResources/entitlements.mas.plist
@@ -56,4 +58,4 @@ nsis:
   allowToChangeInstallationDirectory: true
   include: buildResources/installer.nsh
 #   license: LICENSE
-  artifactName: "OpenBlock Desktop ${version} Setup.${ext}"
+  artifactName: "OpenBlock-Desktop_${version}.${ext}"

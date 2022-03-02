@@ -67,11 +67,14 @@ const runBuilder = function (wrapperConfig, target) {
             allArgs.push('--c.mac.identity=null');
         }
     }
+    if (target.platform === 'win32' && wrapperConfig.mode !== 'dev') {
+        allArgs.push('--ia32', '--x64');
+    }
     if (!wrapperConfig.doPackage) {
         allArgs.push('--dir', '--c.compression=store');
     }
-    if (wrapperConfig.arch === 'ia32') {
-        allArgs.push('--ia32');
+    if (wrapperConfig.doPublish) {
+        allArgs.push('--publish', 'always');
     }
     allArgs = allArgs.concat(wrapperConfig.builderArgs);
     console.log(`running electron-builder with arguments: ${allArgs}`);
@@ -173,26 +176,38 @@ const parseArgs = function () {
 
     let doPackage;
     let doSign;
+    let doPublish;
 
     switch (mode) {
     case 'dev':
         doPackage = true;
         doSign = false;
+        doPublish = false;
         break;
     case 'dir':
         doPackage = false;
         doSign = false;
+        doPublish = false;
         break;
     case 'dist':
         doPackage = true;
         // doSign = true; // skip code signing before getting a certificate
         doSign = false;
+        doPublish = false;
+        break;
+    case 'publish':
+        doPackage = true;
+        // doSign = true; // skip code signing before getting a certificate
+        doSign = false;
+        doPublish = true;
+        break;
     }
 
     return {
         builderArgs,
         doPackage, // false = build to directory
         doSign,
+        doPublish,
         mode,
         arch
     };
