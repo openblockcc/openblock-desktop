@@ -14,7 +14,7 @@ function filterRelease (release) {
 }
 
 function filterAsset(asset) {
-    return (asset.name.indexOf(os.platform()) >= 0) &&  (asset.name.indexOf(os.arch()) >= 0);
+    return (asset.name.indexOf(os.platform()) >= 0);
 }
 
 if (!fs.existsSync(outputdir)) {
