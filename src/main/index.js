@@ -30,8 +30,6 @@ app.allowRendererProcessReuse = true;
 // allow connect to localhost
 app.commandLine.appendSwitch('allow-insecure-localhost', 'true');
 
-console.log('hasSwitch=', app.commandLine.hasSwitch('enable-quic'));
-
 telemetry.appWasOpened();
 
 // const defaultSize = {width: 1096, height: 715}; // minimum
