@@ -17,7 +17,7 @@
     "fetch:firmwares": "rimraf ./firmwares && node ./node_modules/openblock-link/script/download-firmwares.js",
     "fetch:tools": "rimraf ./tools && node ./node_modules/openblock-link/script/download-tools.js",
     "fetch:statics": "rimraf ./statics && mkdirp ./statics && git clone https://github.com/openblockcc/openblock-asset.git statics",
-    "fetch:all": "npm run fetch:drivers && npm run fetch:exts && npm run fetch:firmwares && npm run fetch:tools -- --arch=ia32 && npm run fetch:statics",
+    "fetch:all": "npm run fetch:drivers && npm run fetch:exts && npm run fetch:firmwares && npm run fetch:tools && npm run fetch:statics",
     "build": "npm run build:dev",
     "build:dev": "npm run compile && npm run doBuild -- --mode=dev",
     "build:dir": "npm run compile && npm run doBuild -- --mode=dir",
