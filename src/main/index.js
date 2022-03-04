@@ -7,7 +7,7 @@ import {promisify} from 'util';
 
 import argv from './argv';
 import {getFilterForExtension} from './FileFilters';
-import telemetry from './ScratchDesktopTelemetry';
+import telemetry from './OpenblockDesktopTelemetry';
 import Updater from './OpenblockDesktopUpdater';
 import DesktopLink from './OpenblockDesktopLink.js';
 import MacOSMenu from './MacOSMenu';

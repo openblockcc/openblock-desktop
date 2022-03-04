@@ -20,8 +20,8 @@ import {
   * Default telemetry service URLs
   */
 const TelemetryServerURL = Object.freeze({
-    staging: 'http://scratch-telemetry-staging.us-east-1.elasticbeanstalk.com/',
-    production: 'https://telemetry.scratch.mit.edu/'
+    staging: '',
+    production: 'https://telemetry.openblock.cc/'
 });
 const DefaultServerURL = (
     process.env.NODE_ENV === 'production' ? TelemetryServerURL.production : TelemetryServerURL.staging

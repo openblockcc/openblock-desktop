@@ -138,7 +138,6 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
              * To avoid the electron bug: the input-box lose focus after call alert or confirm on windows platform.
              * https://github.com/electron/electron/issues/19977
             */
-            console.log('this.platform:', this.platform);
             if (this.platform === 'win32') {
                 let options;
                 if (type === MessageBoxType.confirm) {
