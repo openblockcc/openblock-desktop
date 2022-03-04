@@ -12,98 +12,10 @@ on:
       - '.github/*'
 
 jobs:
-  build-windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14.x'
-
-      - name: Npm Install
-        run: npm ci
-
-      - name: Build Dist
-        env:
-          GA_ID: ${{ secrets.GA_ID }}
-          NODE_ENV: production
-          NODE_OPTIONS: --max_old_space_size=4096
-        run: npm run dist
-
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: OpenBlockDesktop-win-x64.exe
-          path: dist/OpenBlock*Setup.exe
-          retention-days: 1
-
-  build-windows32:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14.x'
-
-      - name: Npm Install
-        run: npm install
-
-      - name: Build Dist
-        env:
-          GA_ID: ${{ secrets.GA_ID }}
-          NODE_ENV: production
-          NODE_OPTIONS: --max_old_space_size=4096
-        run: npm run dist32
-
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: OpenBlockDesktop-win-x86.exe
-          path: dist/OpenBlock*Setup.exe
-          retention-days: 1
-
-  build-mac:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14.x'
-
-      - name: Npm Install
-        run: npm install
-
-      - name: Build Dist
-        env:
-          GA_ID: ${{ secrets.GA_ID }}
-          NODE_ENV: production
-          NODE_OPTIONS: --max_old_space_size=8192
-          CSC_IDENTITY_AUTO_DISCOVERY: false
-        run: npm run dist
-
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: OpenBlockDesktop-mac.dmg
-          path: dist/OpenBlock*.dmg
-          retention-days: 1
-
   create-release:
-    needs: [build-windows, build-windows32, build-mac]
-    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      - name: get-npm-version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@master
 
       - name: Get tag
         id: tag
@@ -118,81 +30,75 @@ jobs:
           tag_name: ${{ steps.tag.outputs.tag }}
           release_name: OpenBlock Desktop ${{ steps.tag.outputs.tag }}
           body: |
+            ## Change Log (en)
+
             - **New feature**
 
-                1. First Change
-                2. Second Change
+                1. Feature 1.
+                2. Feature 2.
 
             - **Fix bug**
 
-                1. First Change
-                2. Second Change
+                1. Bug 1.
+                2. Bug 2.
+
+            ## 更改日志 (zh-cn)
+
+            - **新功能**
+
+                1. 功能1。
+                2. 功能2。
+
+            - **修复错误**
+
+                1. 错误1。
+                2. 错误2。
           draft: true
           prerelease: false
 
-      - name: Download all build result
-        uses: actions/download-artifact@v2
+  build-windows:
+    needs: create-release
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
 
-      # Windows x64 Release
-      - name: Zip win x64 file
-        uses: papeloto/action-zip@v1
+      - name: Use Node.js
+        uses: actions/setup-node@v2
         with:
-            files: OpenBlockDesktop-win-x64.exe
-            dest: OpenBlockDesktop-win-x64.zip
+          node-version: '14.x'
 
-      - name: Relase Windows x64 package
-        uses: actions/upload-release-asset@v1
+      - name: Npm Install
+        run: npm ci
+
+      - name: Build and Publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenBlockDesktop-win-x64.zip
-          asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}-win-x64.zip
-          asset_content_type: application/zip
+          GA_ID: ${{ secrets.GA_ID }}
+          DO_KEY_ID: ${{ secrets.DO_KEY_ID }}
+          DO_SECRET_KEY: ${{ secrets.DO_SECRET_KEY }}
+          NODE_ENV: production
+          NODE_OPTIONS: --max_old_space_size=4096
+        run: npm run publish
 
-      # Windows x86 Release
-      - name: Zip win x86 file
-        uses: papeloto/action-zip@v1
-        with:
-            files: OpenBlockDesktop-win-x86.exe
-            dest: OpenBlockDesktop-win-x86.zip
+  build-mac:
+    needs: create-release
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
 
-      - name: Relase Windows x64 package
-        uses: actions/upload-release-asset@v1
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+
+      - name: Npm Install
+        run: npm install
+
+      - name: Build and Publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenBlockDesktop-win-x86.zip
-          asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}-win-x86.zip
-          asset_content_type: application/zip
-
-      # Mac Release
-      - name: Zip mac file
-        uses: papeloto/action-zip@v1
-        with:
-            files: OpenBlockDesktop-mac.dmg
-            dest: OpenBlockDesktop-mac.zip
-
-      - name: Relase Mac package
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenBlockDesktop-mac.zip
-          asset_name: OpenBlockDesktop-${{ steps.package-version.outputs.current-version }}-mac.zip
-          asset_content_type: application/zip
-
-      # Checksum Release
-      - name: Checksum
-        run: sha256sum OpenBlockDesktop-*.zip >> checksums.txt
-
-      - uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: checksums.txt
-          asset_name: ${{ steps.package-version.outputs.current-version }}-checksums-sha256.txt
-          asset_content_type: text/plain
+          GA_ID: ${{ secrets.GA_ID }}
+          DO_KEY_ID: ${{ secrets.DO_KEY_ID }}
+          DO_SECRET_KEY: ${{ secrets.DO_SECRET_KEY }}
+          NODE_ENV: production
+          NODE_OPTIONS: --max_old_space_size=8192
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+        run: npm run publish
