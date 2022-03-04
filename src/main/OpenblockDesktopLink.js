@@ -36,7 +36,8 @@ class OpenblockDesktopLink {
         this._storage = new ElectronStore();
         this._link = new OpenBlockLink(this._dataPath, path.join(this._resourcePath, 'tools'));
         this._resourceServer = new OpenblockResourceServer(this._dataPath,
-            path.join(this._resourcePath, 'external-resources'));
+            path.join(this._resourcePath, 'external-resources'),
+            app.getLocaleCountryCode());
     }
 
     get resourceServer () {

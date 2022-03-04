@@ -6,8 +6,12 @@ extraResources: ["tools", "external-resources", 'firmwares', "statics", "drivers
 appId: openblock.cc.openblock-desktop
 productName: "OpenBlock Desktop"
 publish:
-  provider: github
-  cdn: cdn.openblock.cc
+  - provider: github
+    cdn: cdn.openblock.cc
+  - provider: spaces
+    name: openblock
+    path: desktop
+    region: sgp1
 
 fileAssociations:
   ext: ob

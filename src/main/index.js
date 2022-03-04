@@ -58,7 +58,6 @@ const _windows = {};
 
 // enable connecting to Scratch Link even if we DNS / Internet access is not available
 // this must happen BEFORE the app ready event!
-// TODO 此处设定了 host 地址
 app.commandLine.appendSwitch('host-resolver-rules', 'MAP device-manager.scratch.mit.edu 127.0.0.1');
 
 const displayPermissionDeniedWarning = (browserWindow, permissionType) => {

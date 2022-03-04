@@ -3,12 +3,12 @@ import {autoUpdater, CancellationToken} from 'electron-updater';
 import log from 'electron-log';
 import bytes from 'bytes';
 import path from 'path';
+import fetch from 'electron-fetch';
 
 import formatMessage from 'format-message';
 import parseReleaseMessage from 'openblock-parse-release-message';
 import {UPDATE_TARGET, UPDATE_MODAL_STATE} from 'openblock-gui/src/lib/update-state.js';
 import {AbortController} from 'node-abort-controller';
-
 class OpenblockDesktopUpdater {
     constructor (webContents, resourceServer) {
         this._webContents = webContents;
@@ -16,6 +16,18 @@ class OpenblockDesktopUpdater {
 
         autoUpdater.autoDownload = false;
         autoUpdater.allowDowngrade = true;
+
+        this.isCN = app.getLocaleCountryCode() === 'CN';
+
+        if (this.isCN) {
+            console.log('INFO: The current system setting region is China, use DigitalOcean as the update server.');
+            autoUpdater.setFeedURL({
+                provider: 'spaces',
+                name: 'openblock',
+                path: 'desktop',
+                region: 'sgp1'
+            });
+        }
 
         const appPath = app.getAppPath();
         if (appPath.search(/main/g) !== -1) {
@@ -43,13 +55,37 @@ class OpenblockDesktopUpdater {
     applicationAvailable (info) {
         this.updateTarget = UPDATE_TARGET.application;
 
-        this.reportUpdateState({
-            phase: UPDATE_MODAL_STATE.applicationUpdateAvailable,
-            info: {
-                version: info.version,
-                message: parseReleaseMessage(info.releaseNotes, {html: true})
-            }
-        });
+        if (this.isCN) {
+            const url = `https://openblock.sgp1.digitaloceanspaces.com/desktop/latestRelease.json`;
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    this.reportUpdateState({
+                        phase: UPDATE_MODAL_STATE.applicationUpdateAvailable,
+                        info: {
+                            version: info.version,
+                            message: parseReleaseMessage(data.body)
+                        }
+                    });
+                })
+                .catch(err => {
+                    this.reportUpdateState({
+                        phase: UPDATE_MODAL_STATE.error,
+                        info: {
+                            message: err.message
+                        }
+                    });
+                });
+        } else {
+            this.reportUpdateState({
+                phase: UPDATE_MODAL_STATE.applicationUpdateAvailable,
+                info: {
+                    version: info.version,
+                    message: parseReleaseMessage(info.releaseNotes, {html: true})
+                }
+            });
+        }
     }
 
     resourceAvailable (info) {
@@ -155,7 +191,7 @@ class OpenblockDesktopUpdater {
             let downloadInProgress = false;
 
             const stepProgressBar = progress => {
-                setTimeout(() => {
+                this.startDownloadTimeout = setTimeout(() => {
                     if (!downloadInProgress && progress <= PROGRESS_DOWNLOADING_PROGRESS_VALUE) {
                         this.reportUpdateState({
                             phase: UPDATE_MODAL_STATE.applicationDownloading,
@@ -164,6 +200,8 @@ class OpenblockDesktopUpdater {
                             }
                         });
                         stepProgressBar(progress + PROGRESS_STEP_VALUE);
+                    } else {
+                        this.startDownloadTimeout = null;
                     }
                 }, PROGRESS_STEP_INTERVAL * 1000);
             };
@@ -198,10 +236,7 @@ class OpenblockDesktopUpdater {
                     });
                 });
 
-                autoUpdater.on('update-downloaded', info => {
-                    console.log('更新完成');
-                    console.log(info);
-
+                autoUpdater.on('update-downloaded', () => {
                     this.reportUpdateState({phase: UPDATE_MODAL_STATE.applicationDownloadFinish});
                     setTimeout(() => {
                         console.log(`INFO: App will quit and install after 3 seconds`);
@@ -259,6 +294,9 @@ class OpenblockDesktopUpdater {
         } else if (this.updaterState === UPDATE_MODAL_STATE.applicationDownloading) {
             this.removeAllAutoUpdaterListeners();
             this.cancellationToken.cancel();
+            if (this.startDownloadTimeout) {
+                clearTimeout(this.startDownloadTimeout);
+            }
         }
 
         if (this.updaterState !== UPDATE_MODAL_STATE.abort) {
