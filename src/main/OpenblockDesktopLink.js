@@ -1,7 +1,7 @@
 import {app} from 'electron';
 import path from 'path';
 import os from 'os';
-import {execFile} from 'child_process';
+import {execFile, spawn} from 'child_process';
 import fs from 'fs-extra';
 import ElectronStore from 'electron-store';
 
@@ -51,7 +51,7 @@ class OpenblockDesktopLink {
         } else if ((os.platform() === 'win32') && (os.arch() === 'ia32')) {
             execFile('install_x86.bat', [], {cwd: driverPath});
         } else if ((os.platform() === 'darwin')) {
-            execFile('install.sh', [], {cwd: driverPath});
+            spawn('sh', ['install.sh'], {shell: true, cwd: driverPath});
         }
     }
 
