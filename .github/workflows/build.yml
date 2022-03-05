@@ -32,6 +32,7 @@ jobs:
       - name: Build Dist
         env:
           GA_ID: ${{ secrets.GA_ID }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NODE_ENV: production
           NODE_OPTIONS: --max_old_space_size=4096
         run: npm run dist
@@ -59,6 +60,7 @@ jobs:
       - name: Build Dist
         env:
           GA_ID: ${{ secrets.GA_ID }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NODE_ENV: production
           NODE_OPTIONS: --max_old_space_size=8192
           CSC_IDENTITY_AUTO_DISCOVERY: false
