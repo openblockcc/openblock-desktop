@@ -1,4 +1,4 @@
-name: Build and release
+name: Build Test App
 
 on:
   push:
