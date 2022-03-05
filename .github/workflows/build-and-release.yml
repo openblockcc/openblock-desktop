@@ -57,7 +57,7 @@ jobs:
 
   build-windows:
     needs: create-release
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
 
@@ -67,7 +67,8 @@ jobs:
           node-version: '14.x'
 
       - name: Npm Install
-        run: npm ci
+        run: |
+          npm ci
 
       - name: Build and Publish
         env:

@@ -1,4 +1,4 @@
-name: Build and release
+name: Build Test App
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   build-windows:
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
 
@@ -21,7 +21,8 @@ jobs:
           node-version: '14.x'
 
       - name: Npm Install
-        run: npm ci
+        run: |
+          npm ci
 
       - name: get-npm-version
         id: package-version
