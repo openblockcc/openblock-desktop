@@ -55,28 +55,30 @@ class OpenblockDesktopLink {
         }
     }
 
-    clearCache () {
+    clearCache (reboot = true) {
         if (fs.existsSync(this._dataPath)) {
             fs.rmSync(this._dataPath, {recursive: true, force: true});
         }
-        app.relaunch();
-        app.exit();
+        if (reboot){
+            app.relaunch();
+            app.exit();
+        }
     }
 
     updateCahce () {
         const appVersion = app.getVersion();
 
-        // if current version is newer then cache log, delet the data cache dir and write the
+        // if current version is newer then cache log, delete the data cache dir and write the
         // new version into the cache file.
         if (!this._storage.has('version')) {
+            console.log('First launch or older versions exist, try to clearing cache...');
+            this.clearCache(false);
             this._storage.set('version', appVersion);
         }
         const oldVersion = this._storage.get('version');
         if (compareVersions.compare(appVersion, oldVersion, '>')) {
             console.log('New version detected, clearing cache...');
-            if (fs.existsSync(this._dataPath)) {
-                fs.rmSync(this._dataPath, {recursive: true, force: true});
-            }
+            this.clearCache(false);
             this._storage.set('version', appVersion);
         }
     }
@@ -92,9 +94,7 @@ class OpenblockDesktopLink {
             })
             .catch(e => {
                 // Delet error cache dir and exit
-                if (fs.existsSync(this._dataPath)) {
-                    fs.rmSync(this._dataPath, {recursive: true, force: true});
-                }
+                this.clearCache(false);
                 return Promise.reject(e);
             });
     }
