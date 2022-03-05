@@ -73,9 +73,9 @@ jobs:
       - name: Build and Publish
         env:
           GA_ID: ${{ secrets.GA_ID }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           DO_KEY_ID: ${{ secrets.DO_KEY_ID }}
           DO_SECRET_KEY: ${{ secrets.DO_SECRET_KEY }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NODE_ENV: production
           NODE_OPTIONS: --max_old_space_size=4096
         run: npm run publish
@@ -92,11 +92,12 @@ jobs:
           node-version: '14.x'
 
       - name: Npm Install
-        run: npm install
+        run: npm ci
 
       - name: Build and Publish
         env:
           GA_ID: ${{ secrets.GA_ID }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           DO_KEY_ID: ${{ secrets.DO_KEY_ID }}
           DO_SECRET_KEY: ${{ secrets.DO_SECRET_KEY }}
           NODE_ENV: production
