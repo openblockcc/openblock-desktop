@@ -79,6 +79,7 @@
     "lodash.defaultsdeep": "^4.6.1",
     "minilog": "^3.1.0",
     "minimist": "^1.2.5",
+    "mkdirp": "^1.0.4",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "nets": "^3.2.0",
     "node-abort-controller": "^3.0.1",

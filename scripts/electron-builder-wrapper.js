@@ -75,6 +75,9 @@ const runBuilder = function (wrapperConfig, target) {
     }
     if (wrapperConfig.doPublish) {
         allArgs.push('--publish', 'always');
+    } else {
+        // Prevent electron build from automatically publishing in github action
+        allArgs.push('--publish', 'never');
     }
     allArgs = allArgs.concat(wrapperConfig.builderArgs);
     console.log(`running electron-builder with arguments: ${allArgs}`);
