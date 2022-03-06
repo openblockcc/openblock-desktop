@@ -4,16 +4,17 @@
 
 - **New feature**
 
-    1. When saving a project without a hardware device, convert it to a format supported by scratch3, so that scratch3 can open the pure scratch project created by openblock. (The save format is still .ob but scratch can be forced to open)
-    2. Hide sprites and sounds tabs in upload mode.
-    3. Disable the edit button in the menu bar in upload mode.
-    4. Added Traditional Chinese translation.
-    5. In the upload mode of micropython, the building blocks of custom list variables can generate code.
-    6. Added code editing support, you can now edit the code after unlocking the code area.
-    7. Optimize and reduce the file size of external resources.
-    8. Supports opening multiple apps at the same time.
-    9. Add software loading interface.
+    1. Application auto-update feature is now supported.
+    2. Supports opening multiple apps at the same time.
+    3. Added Traditional Chinese translation.
+    4. Add software loading interface.
+    5. Added code editing support, you can now edit the code after unlocking the code area.
+    6. Hide sprites and sounds tabs in upload mode.
+    7. Disable the edit button in the menu bar in upload mode.
+    8. In the upload mode of micropython, the building blocks of custom list variables can generate code.
+    9. Optimize and reduce the file size of external resources.
     10. Merge the installation files for the 32-bit and 64-bit versions of the windows version.
+    11. When saving a project without a hardware device, convert it to a format supported by scratch3, so that scratch3 can open the pure scratch project created by openblock. (The save format is still .ob but scratch can be forced to open)
 
 - **Fix bug**
 
