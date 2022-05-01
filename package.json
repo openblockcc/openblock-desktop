@@ -3,7 +3,7 @@
   "productName": "OpenBlock Desktop",
   "description": "OpenBlock as a self-contained desktop application",
   "author": "Openblock.cc Team",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "license": "MIT",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "bytes": "^3.1.2",
-    "openblock-link": "^0.2.0-prerelease.20220305092509",
+    "openblock-link": "^0.2.0-prerelease.20220404092817",
     "openblock-resource": "^0.2.0-prerelease.20220305165916",
     "postinstall": "^0.7.4",
     "source-map-support": "^0.5.19"
@@ -83,8 +83,8 @@
     "nets": "^3.2.0",
     "node-abort-controller": "^3.0.1",
     "node-fetch": "^3.2.1",
-    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.3.0",
-    "openblock-l10n": "^3.10.20220304103031",
+    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.3.1",
+    "openblock-l10n": "^3.10.20220501071455",
     "openblock-parse-release-message": "0.0.4",
     "os-locale": "^5.0.0",
     "react": "^16.14.0",
