@@ -39,7 +39,7 @@ const PrivacyElement = () => (
             </li>
             <li>
                 <b>Legal</b> - We may use your Information to enforce our <a
-                    href="https://scratch.mit.edu/terms_of_use"
+                    href="https://www.openblock.cc/terms-of-use"
                     target="_blank"
                     rel="noopener noreferrer"
                 >Terms of Use</a>, to defend our legal rights, and to comply with our legal obligations and internal
