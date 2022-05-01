@@ -1,8 +1,7 @@
 directories:
   buildResources: buildResources
   output: dist
-extraResources: ["tools", "external-resources", 'firmwares', "statics", "drivers"]
-extraFiles: ['LICENSE', 'LICENSE.OFL', 'LICENSE.ScratchFoundation', 'TRADEMARK']
+extraFiles: ['LICENSE', 'LICENSE.OFL', 'LICENSE.ScratchFoundation', 'TRADEMARK', "tools", "external-resources", 'firmwares', "drivers"]
 
 appId: openblock.cc.openblock-desktop
 productName: "OpenBlock Desktop"

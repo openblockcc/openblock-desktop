@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const staticAssets = path.resolve(__static, '../statics/assets');
+const staticAssets = path.resolve(__static, 'assets');
 
 /**
  * Allow the storage module to load files bundled in the Electron application.

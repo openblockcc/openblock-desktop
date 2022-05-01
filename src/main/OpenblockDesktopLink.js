@@ -12,31 +12,29 @@ import OpenblockResourceServer from 'openblock-resource';
 
 class OpenblockDesktopLink {
     constructor () {
-        const appPath = app.getAppPath();
-
-        this._resourcePath = null;
         this._resourceServer = null;
 
-        if (appPath.search(/app/g) !== -1) {
+        this.appPath = app.getAppPath();
+        if (this.appPath.search(/app/g) !== -1) {
             // Normal app
-            this._resourcePath = path.join(appPath, '../');
-        } else if (appPath.search(/main/g) !== -1) { // eslint-disable-line no-negated-condition
+            this.appPath = path.join(this.appPath, '../../');
+        } else if (this.appPath.search(/main/g) !== -1) { // eslint-disable-line no-negated-condition
             // Start by start script it  debug mode.
-            this._resourcePath = path.join(appPath, '../../');
+            this.appPath = path.join(this.appPath, '../../../');
         } else {
             // App in dir mode
-            this._resourcePath = path.join(appPath);
+            this.appPath = path.join(this.appPath, '../');
         }
 
         const userDataPath = app.getPath(
             'userData'
         );
-        this._dataPath = path.join(userDataPath, 'Data');
+        this.dataPath = path.join(userDataPath, 'Data');
 
         this._storage = new ElectronStore();
-        this._link = new OpenBlockLink(this._dataPath, path.join(this._resourcePath, 'tools'));
-        this._resourceServer = new OpenblockResourceServer(this._dataPath,
-            path.join(this._resourcePath, 'external-resources'),
+        this._link = new OpenBlockLink(this.dataPath, path.join(this.appPath, 'tools'));
+        this._resourceServer = new OpenblockResourceServer(this.dataPath,
+            path.join(this.appPath, 'external-resources'),
             app.getLocaleCountryCode());
     }
 
@@ -45,7 +43,7 @@ class OpenblockDesktopLink {
     }
 
     installDriver () {
-        const driverPath = path.join(this._resourcePath, 'drivers');
+        const driverPath = path.join(this.appPath, 'drivers');
         if ((os.platform() === 'win32') && (os.arch() === 'x64')) {
             execFile('install_x64.bat', [], {cwd: driverPath});
         } else if ((os.platform() === 'win32') && (os.arch() === 'ia32')) {
@@ -56,8 +54,8 @@ class OpenblockDesktopLink {
     }
 
     clearCache (reboot = true) {
-        if (fs.existsSync(this._dataPath)) {
-            fs.rmSync(this._dataPath, {recursive: true, force: true});
+        if (fs.existsSync(this.dataPath)) {
+            fs.rmSync(this.dataPath, {recursive: true, force: true});
         }
         if (reboot){
             app.relaunch();

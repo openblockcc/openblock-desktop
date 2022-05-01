@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "clean": "rimraf ./dist ./statics ./external-resources ./tools ./translations ./firmwares ./drivers",
+    "clean": "rimraf ./dist ./static ./external-resources ./tools ./translations ./firmwares ./drivers",
     "i18n:src": "mkdirp translations/core && format-message extract --out-file translations/core/en.json src/main/**.js",
     "i18n:push": "tx-push-src openblock-editor desktop translations/core/en.json",
     "start": "mkdirp ./dist && electron-webpack dev --bail --display-error-details --env.minify=false --no-progress",
@@ -16,8 +16,8 @@
     "fetch:exts": "rimraf ./external-resources && node ./node_modules/openblock-resource/script/download.js  --repo=openblockcc/external-resources-v2",
     "fetch:firmwares": "rimraf ./firmwares && node ./node_modules/openblock-link/script/download-firmwares.js",
     "fetch:tools": "rimraf ./tools && node ./node_modules/openblock-link/script/download-tools.js",
-    "fetch:statics": "rimraf ./statics && mkdirp ./statics && git clone https://github.com/openblockcc/openblock-asset.git statics",
-    "fetch:all": "npm run fetch:drivers && npm run fetch:exts && npm run fetch:firmwares && npm run fetch:tools && npm run fetch:statics",
+    "fetch:static": "rimraf ./static && mkdirp ./static && git clone https://github.com/openblockcc/openblock-assets.git static && rimraf ./static/.git",
+    "fetch:all": "npm run fetch:drivers && npm run fetch:exts && npm run fetch:firmwares && npm run fetch:tools && npm run fetch:static",
     "build": "npm run build:dev",
     "build:dev": "npm run compile && npm run doBuild -- --mode=dev",
     "build:dir": "npm run compile && npm run doBuild -- --mode=dir",
@@ -26,7 +26,6 @@
     "upload:releaseInfo": "node ./scripts/upload-release-info.mjs",
     "doBuild": "node ./scripts/electron-builder-wrapper.js",
     "dist": "npm run clean && npm run compile && npm run fetch:all && npm run doBuild -- --mode=dist",
-    "distDev": "npm run clean && npm run compile && npm run fetch:all && npm run doBuild -- --mode=dev",
     "publish": "npm run clean && npm run compile && npm run fetch:all  && npm run doBuild -- --mode=publish",
     "test": "npm run test:lint",
     "test:lint": "eslint --cache --color --ext .jsx,.js src scripts"
