@@ -4,9 +4,9 @@
 
 - **New feature**
 
-    1. The user can use the enter key to send in the serialport console.
-    2. Increase default upload speed for esp32/8266 to increase upload speed.
-    3. Delete the blocks in the sensor directory that are not commonly used in esp32.
+    1. The user can use the enter key to send data in the serialport console.
+    2. Increase default upload baudrate for esp32/8266 to increase upload speed.
+    3. Delete the blocks in the sensor directory that are not commonly used by esp32.
     4. Added support for Ctrl + A/B/C/D shortcut keys in the serial terminal to better interact with the micrpython repl interface.
     5. Remove the arduino mini board that is not used frequently.
     6. Modify arduino nano download parameters to use old bootloader and add missing A6 A7 pins.
@@ -19,7 +19,7 @@
     1. The license file is not packaged in the installation package.
     2. Fixed the problem that the outer frame and the main body of the microbit terminal block were the same color.
     3. Fix the problem that some int type input can be set to decimal.
-    4. Microbit show piexl at xx with brightness xx block's brightness menu don't take effect.
+    4. Microbit show piexl at xx with brightness xx block's brightness parameter don't take effect.
 
 ## v2.3.0
 
