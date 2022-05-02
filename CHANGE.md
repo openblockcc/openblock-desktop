@@ -17,9 +17,10 @@
 - **Fix bug**
 
     1. The license file is not packaged in the installation package.
-    2. Fixed the problem that the outer frame and the main body of the microbit terminal block were the same color.
-    3. Fix the problem that some int type input can be set to decimal.
+    2. Fixed the error that the outer frame and the main body of the microbit terminal block were the same color.
+    3. Fix the error that some int type input can be set to decimal.
     4. Microbit show piexl at xx with brightness xx block's brightness parameter don't take effect.
+    5. Fix the error that the microbit v2 download program fails.
 
 ## v2.3.0
 
