@@ -19,6 +19,7 @@ a:active, a:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    text-align:center;
 }
 
 .aboutLogo {
@@ -33,6 +34,9 @@ a:active, a:hover {
 
 .aboutDetails {
     font-size: x-small;
+    text-align:left;
+    margin:auto;
+
 }
 
 .aboutFooter {
