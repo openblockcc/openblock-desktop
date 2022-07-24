@@ -32,8 +32,7 @@ app.commandLine.appendSwitch('allow-insecure-localhost', 'true');
 
 telemetry.appWasOpened();
 
-// const defaultSize = {width: 1096, height: 715}; // minimum
-const defaultSize = {width: 1280, height: 800}; // good for MAS screenshots
+const defaultSize = {width: 1600, height: 900};
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
