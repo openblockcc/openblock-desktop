@@ -266,6 +266,17 @@ const createAboutWindow = () => {
     return window;
 };
 
+const createLicenseWindow = () => {
+    const window = createWindow({
+        width: _windows.main.width * 0.8,
+        height: _windows.main.height * 0.8,
+        parent: _windows.main,
+        search: 'route=license',
+        title: `${productName} License`
+    });
+    return window;
+};
+
 const createPrivacyWindow = () => {
     const window = createWindow({
         width: _windows.main.width * 0.8,
@@ -525,6 +536,11 @@ app.on('ready', () => {
         event.preventDefault();
         _windows.about.hide();
     });
+    _windows.license = createLicenseWindow();
+    _windows.license.on('close', event => {
+        event.preventDefault();
+        _windows.license.hide();
+    });
     _windows.privacy = createPrivacyWindow();
     _windows.privacy.on('close', event => {
         event.preventDefault();
@@ -547,6 +563,7 @@ app.on('ready', () => {
             .then(() => {
                 // after finsh load progress show main window and close loading window
                 _windows.main.show();
+                _windows.license.show();
                 _windows.loading.close();
                 delete _windows.loading;
             })
@@ -574,6 +591,10 @@ app.on('ready', () => {
 
 ipcMain.on('open-about-window', () => {
     _windows.about.show();
+});
+
+ipcMain.on('open-license-window', () => {
+    _windows.license.show();
 });
 
 ipcMain.on('open-privacy-policy-window', () => {

@@ -106,6 +106,9 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
         handleClickAbout () {
             ipcRenderer.send('open-about-window');
         }
+        handleClickLicense () {
+            ipcRenderer.send('open-license-window');
+        }
         handleClickCheckUpdate () {
             ipcRenderer.send('reqeustCheckUpdate');
         }
@@ -171,7 +174,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                 canModifyCloudData={false}
                 canSave={false}
                 isScratchDesktop
-                onClickAbout={[ // 新方法？似乎gui里已经有接口了
+                onClickAbout={[
                     {
                         title: (<FormattedMessage
                             defaultMessage="About"
@@ -179,6 +182,14 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                             id="gui.desktopMenuBar.about"
                         />),
                         onClick: () => this.handleClickAbout()
+                    },
+                    {
+                        title: (<FormattedMessage
+                            defaultMessage="License"
+                            description="Menu bar item for license"
+                            id="gui.desktopMenuBar.license"
+                        />),
+                        onClick: () => this.handleClickLicense()
                     },
                     {
                         title: (<FormattedMessage

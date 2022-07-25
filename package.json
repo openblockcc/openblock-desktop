@@ -54,6 +54,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-react-intl": "^7.5.7",
+    "classnames": "^2.3.1",
     "compare-versions": "^3.6.0",
     "copy-webpack-plugin": "^5.1.1",
     "download-github-release": "^0.3.2",
