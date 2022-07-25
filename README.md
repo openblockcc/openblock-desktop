@@ -15,7 +15,7 @@ OpenBlock as a standalone desktop application.
 
 ## Getting Start
 
-Visit the wiki: [https://wiki.openblock.cc](https://wiki.openblock.cc)
+Visit the wiki: [https://openblockcc.github.io](https://openblockcc.github.io)
 
 ## Join chat
 
