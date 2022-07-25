@@ -85,7 +85,7 @@
     "node-abort-controller": "^3.0.1",
     "node-fetch": "^3.2.1",
     "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.3.1",
-    "openblock-l10n": "^3.10.20220501071455",
+    "openblock-l10n": "^3.10.20220725124603",
     "openblock-parse-release-message": "0.0.4",
     "os-locale": "^5.0.0",
     "react": "^16.14.0",
