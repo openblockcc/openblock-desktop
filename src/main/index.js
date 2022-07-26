@@ -563,7 +563,6 @@ app.on('ready', () => {
             .then(() => {
                 // after finsh load progress show main window and close loading window
                 _windows.main.show();
-                _windows.license.show();
                 _windows.loading.close();
                 delete _windows.loading;
             })
