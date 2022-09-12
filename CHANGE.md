@@ -1,5 +1,20 @@
 # Change Log
 
+## v2.3.2
+
+- **New feature**
+
+    1. Add support for Arduino K210.
+    2. Adjust the menu bar layout.
+    3. Add support for setting the maximum and minimum values of the angle plate, the excess part will be displayed in gray.
+    4. The color of the numerical slider track changes from gray to change with the color of the parent block.
+
+- **Fix bug**
+
+    1. The color of the angle plate does not change with the color of the blocks.
+    2. Arduino esp8266 compilation and download failed.
+    3. When generating arduino code, double quote code in string is not escaped
+
 ## v2.3.1
 
 - **New feature**
