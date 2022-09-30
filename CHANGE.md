@@ -1,5 +1,16 @@
 # Change Log
 
+## v2.3.3
+
+- **New feature**
+
+    1. Hide the unspported variable blocks in upload mode.
+    2. Add support for arduino list variable blocks.
+
+- **Fix bug**
+
+    1. NodeMCU upload program failed, report: "Not a valid FQBN: not an FQBN".
+
 ## v2.3.2
 
 - **New feature**
