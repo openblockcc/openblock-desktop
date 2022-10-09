@@ -1,5 +1,16 @@
 # Change Log
 
+## 2.4.0
+
+- **New feature**
+
+    1. Add support for Linux system.
+    2. Add support for Arduino Raspberry Pi Pico.
+
+- **Fix bug**
+
+    1. After load project file, the custom blocks in the project is missing in toolbox.
+
 ## v2.3.3
 
 - **New feature**
