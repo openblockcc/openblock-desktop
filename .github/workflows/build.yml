@@ -34,6 +34,7 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
+          name: OpenBlock-Desktop.exe
           path: dist/OpenBlock-Desktop*.exe
           retention-days: 1
 
@@ -61,6 +62,7 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
+          name: OpenBlock-Desktop.dmg
           path: dist/OpenBlock-Desktop*.dmg
           retention-days: 1
 
@@ -88,5 +90,6 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
+          name: OpenBlock-Desktop.deb
           path: dist/OpenBlock-Desktop*.deb
           retention-days: 1
