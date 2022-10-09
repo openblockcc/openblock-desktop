@@ -6,6 +6,8 @@ import fs from 'fs-extra';
 import ElectronStore from 'electron-store';
 
 import compareVersions from 'compare-versions';
+import sudo from 'sudo-prompt';
+import {productName} from '../../package.json';
 
 import OpenBlockLink from 'openblock-link';
 import OpenblockResourceServer from 'openblock-resource';
@@ -19,8 +21,12 @@ class OpenblockDesktopLink {
             // Normal app
             this.appPath = path.join(this.appPath, '../../');
         } else if (this.appPath.search(/main/g) !== -1) { // eslint-disable-line no-negated-condition
-            // Start by start script it  debug mode.
-            this.appPath = path.join(this.appPath, '../../../');
+            // Start by start script in debug mode.
+            if (os.platform() === 'linux') {
+                this.appPath = path.join(this.appPath, '../../');
+            } else {
+                this.appPath = path.join(this.appPath, '../../../');
+            }
         } else {
             // App in dir mode
             this.appPath = path.join(this.appPath, '../');
@@ -42,7 +48,7 @@ class OpenblockDesktopLink {
         return this._resourceServer;
     }
 
-    installDriver () {
+    installDriver (callback = null) {
         const driverPath = path.join(this.appPath, 'drivers');
         if ((os.platform() === 'win32') && (os.arch() === 'x64')) {
             execFile('install_x64.bat', [], {cwd: driverPath});
@@ -50,6 +56,15 @@ class OpenblockDesktopLink {
             execFile('install_x86.bat', [], {cwd: driverPath});
         } else if ((os.platform() === 'darwin')) {
             spawn('sh', ['install.sh'], {shell: true, cwd: driverPath});
+        } else if ((os.platform() === 'linux')) {
+            sudo.exec(`sh ${path.join(driverPath, 'linux_setup.sh')} yang`, {name: productName},
+                error => {
+                    if (error) throw error;
+                    if (callback) {
+                        callback();
+                    }
+                }
+            );
         }
     }
 

@@ -11,6 +11,7 @@ publish:
     name: openblock
     path: desktop
     region: sgp1
+artifactName: "OpenBlock-Desktop_v${version}_${os}_${arch}.${ext}"
 
 fileAssociations:
   ext: ob
@@ -30,7 +31,6 @@ mac:
   hardenedRuntime: true
   icon: buildResources/OpenBlockDesktop.icns
   provisioningProfile: embedded.provisionprofile
-  artifactName: "OpenBlock-Desktop_${version}.${ext}"
   target:
     - dmg
     # - mas
@@ -55,10 +55,24 @@ win:
 #   identityName: "OpenblockTeam.OpenblockDesktop
 #   publisherDisplayName: "OpenBlock Team"
 #   publisher: "CN=2EC43DF1-469A-4119-9AB9-568A0A1FF65F"
-#   artifactName: "OpenBlock ${version}.${ext}"
 nsis:
   oneClick: false # allow user to choose per-user or per-machine
   allowToChangeInstallationDirectory: true
   include: buildResources/installer.nsh
 #   license: LICENSE
-  artifactName: "OpenBlock-Desktop_${version}.${ext}"
+
+linux:
+  category: Education
+  icon: buildResources/linux
+  desktop:
+    - Encoding: UTF-8
+    - Name: OpenBlockDesktop
+    - Icon: openblock-desktop
+    - Type: Application
+    - Terminal: false
+  target:
+    - deb
+
+deb:
+  depends: ["libnotify4", "libxtst6", "libnss3"]
+

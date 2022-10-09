@@ -552,7 +552,16 @@ app.on('ready', () => {
     });
 
     ipcMain.on('installDriver', () => {
-        desktopLink.installDriver();
+        desktopLink.installDriver(() => {
+            dialog.showMessageBox(_windows.main, {
+                type: 'info',
+                message: `${formatMessage({
+                    id: 'index.systemRestartRequired',
+                    default: 'Installation is complete, please restart the system.',
+                    description: 'prompt for restart system'
+                })}`
+            });
+        });
     });
 
     // create a loading windows let user know the app is starting
