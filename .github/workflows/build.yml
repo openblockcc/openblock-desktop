@@ -34,7 +34,6 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: OpenBlock-Desktop.exe
           path: dist/OpenBlock-Desktop*.exe
           retention-days: 1
 
@@ -62,6 +61,32 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: OpenBlock-Desktop.dmg
           path: dist/OpenBlock-Desktop*.dmg
+          retention-days: 1
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+
+      - name: Npm Install
+        run: npm ci
+
+      - name: Build Dist
+        env:
+          GA_ID: ${{ secrets.GA_ID }}
+          NODE_ENV: production
+          NODE_OPTIONS: --max_old_space_size=8192
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+        run: npm run dist
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: dist/OpenBlock-Desktop*.deb
           retention-days: 1
