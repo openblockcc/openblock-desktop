@@ -2,7 +2,7 @@
   "name": "openblock-desktop",
   "productName": "OpenBlockDesktop",
   "description": "OpenBlock as a self-contained desktop application",
-  "author": "Openblock.cc Team",
+  "author": "Openblock.cc Team <contact@openblock.cc> (http://www.openblock.cc/)",
   "version": "2.3.3",
   "license": "MIT",
   "scripts": {
