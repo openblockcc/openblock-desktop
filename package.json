@@ -73,7 +73,7 @@
     "eslint-plugin-react": "^7.20.0",
     "format-message": "^6.2.3",
     "format-message-cli": "^6.2.3",
-    "fs-extra": "^9.0.1",
+    "fs-extra": "^11.1.0",
     "intl": "1.2.5",
     "lodash.bindall": "^4.4.0",
     "lodash.defaultsdeep": "^4.6.1",
