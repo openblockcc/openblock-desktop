@@ -1,5 +1,20 @@
 # Change Log
 
+## 2.4.1
+
+- **New feature**
+
+    1. Designate independent cache paths for different Arduino boards to speed up compilation.
+    2. Add the upload abort function to abort the upload operation during the upload process.
+    3. When the device is being connected, if the serial port is occupied, it will display the connection failure and prompt that the serial port is occupied.
+    4. A 3-second timer is added to automatically close the upload window when the upload is successful or aborted. The user can click any blank space or press ESC before the timer expires to stop the timer to check the log in the upload window.
+    5. Adjust the default size after the interface is opened, so that the extension interface can fully display 5 lines of content.
+
+- **Fix bug**
+
+    1. After installing for the first time or clearing the cache and restarting, the device blocks are all damaged when loading a project with device.
+    2. Get error when trying to save a project into the root path of drive.
+
 ## 2.4.0
 
 - **New feature**
