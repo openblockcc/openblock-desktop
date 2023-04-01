@@ -558,6 +558,32 @@ app.on('ready', () => {
                 _windows.main.on('closed', () => {
                     delete _windows.main;
                 });
+
+                // In order to fix the bug caused by using alert on windows
+                // https://github.com/electron/electron/issues/20400
+                if (process.platform === 'win32') {
+                    let needsFocusFix = false;
+                    let triggeringProgrammaticBlur = false;
+                    _windows.main.on('blur', () => {
+                        if (!triggeringProgrammaticBlur) {
+                            needsFocusFix = true;
+                        }
+                    });
+                    _windows.main.on('focus', () => {
+                        if (needsFocusFix) {
+                            needsFocusFix = false;
+                            triggeringProgrammaticBlur = true;
+                            setTimeout(() => {
+                                _windows.main.blur();
+                                _windows.main.focus();
+                                setTimeout(() => {
+                                    triggeringProgrammaticBlur = false;
+                                }, 100);
+                            }, 100);
+                        }
+                    });
+                }
+
                 _windows.about = createAboutWindow();
                 _windows.about.on('close', event => {
                     event.preventDefault();
