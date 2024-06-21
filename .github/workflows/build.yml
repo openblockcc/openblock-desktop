@@ -18,7 +18,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14.x'
+          node-version: '16.x'
 
       - name: Npm Install
         run: |
@@ -34,22 +34,24 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: OpenBlock-Desktop.exe
+          name: OpenBlock-Desktop-win32
           path: dist/OpenBlock-Desktop*.exe
           retention-days: 1
 
   build-mac:
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v2
 
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14.x'
+          node-version: '16.x'
 
       - name: Npm Install
-        run: npm ci
+        run: |
+          pip install setuptools
+          npm ci
 
       - name: Build Dist
         env:
@@ -62,7 +64,7 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: OpenBlock-Desktop.dmg
+          name: OpenBlock-Desktop-darwin
           path: dist/OpenBlock-Desktop*.dmg
           retention-days: 1
 
@@ -74,7 +76,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14.x'
+          node-version: '16.x'
 
       - name: Npm Install
         run: npm ci
@@ -90,6 +92,6 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: OpenBlock-Desktop.deb
+          name: OpenBlock-Desktop-linux
           path: dist/OpenBlock-Desktop*.deb
           retention-days: 1
