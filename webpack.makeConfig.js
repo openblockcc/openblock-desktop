@@ -100,7 +100,7 @@ const makeConfig = function (defaultConfig, options) {
                     }]
                 },
                 {
-                    test: /\.(svg|png|wav|gif|jpg)$/,
+                    test: /\.(svg|png|wav|gif|jpg|ttf)$/,
                     loader: 'file-loader',
                     options: {
                         outputPath: 'static/assets/'

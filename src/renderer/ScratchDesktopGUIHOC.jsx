@@ -94,7 +94,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
             ipcRenderer.on('setUserId', (event, args) => {
                 initialAnalytics(args);
                 // Register "base" page view
-                analytics.pageview('/', null, 'desktop');
+                analytics.send({hitType: 'pageview', page: '/', title: 'desktop'});
             });
             ipcRenderer.on('setPlatform', (event, args) => {
                 this.platform = args;

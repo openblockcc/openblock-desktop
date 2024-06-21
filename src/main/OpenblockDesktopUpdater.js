@@ -16,18 +16,6 @@ class OpenblockDesktopUpdater {
 
         autoUpdater.autoDownload = false;
 
-        this.isCN = app.getLocaleCountryCode() === 'CN';
-
-        if (this.isCN) {
-            console.log('INFO: The current system setting region is China, use DigitalOcean as the update server.');
-            autoUpdater.setFeedURL({
-                provider: 'spaces',
-                name: 'openblock',
-                path: 'desktop',
-                region: 'sgp1'
-            });
-        }
-
         const appPath = app.getAppPath();
         if (appPath.search(/main/g) !== -1) {
             autoUpdater.logger = log;

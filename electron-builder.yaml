@@ -7,10 +7,6 @@ appId: openblock.cc.openblock-desktop
 productName: "OpenBlockDesktop"
 publish:
   - provider: github
-  - provider: spaces
-    name: openblock
-    path: desktop
-    region: sgp1
 artifactName: "OpenBlock-Desktop_v${version}_${os}_${arch}.${ext}"
 
 fileAssociations:
