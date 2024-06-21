@@ -573,11 +573,13 @@ app.on('ready', () => {
                     needsFocusFix = false;
                     triggeringProgrammaticBlur = true;
                     setTimeout(() => {
-                        _windows.main.blur();
-                        _windows.main.focus();
-                        setTimeout(() => {
-                            triggeringProgrammaticBlur = false;
-                        }, 100);
+                        if (_windows.main) {
+                            _windows.main.blur();
+                            _windows.main.focus();
+                            setTimeout(() => {
+                                triggeringProgrammaticBlur = false;
+                            }, 100);
+                        }
                     }, 100);
                 }
             });
