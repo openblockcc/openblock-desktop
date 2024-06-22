@@ -1,5 +1,29 @@
 # Change Log
 
+## 2.5.0
+
+- **New feature**
+
+    1. Added support for Russian language.
+    2. Add support for unload sratch extennsion.
+    3. When the window width cannot fit the menu bar content, an abbreviated version of the menu is displayed.
+    4. Adjust the framework of external resources and support the injection of resources from non-installation departments.
+    5. Add support for copying and pasting blocks.
+    6. Add support for custom matrix block height and width.
+    7. Added support for aborting the Arduino upload process.
+    8. Upgrade google analytics to GA4.
+
+- **Fix bug**
+
+    1. After unchecking show all devices, non-compliant devices still appear in the connection list.
+    2. After uploading is completed, click the upload information to automatically jump to the bottom of the content.
+    3. Corrected the text description of the Arduino serial port reading block.
+    4. Corrected the code generation structure of the microbit event block to prevent function crash caused by repeated reentry when using a perpetual loop in the event block.
+    5. The Arduino program will be stuck for a short while before uploading
+    6. esp32 arduino setPinMode building block pin menu only shows output pins.
+    7. In the library interface, if a item title is too long, it will not be fully displayed.
+    8. mega2560 real-time mode reading analog pin error.
+
 ## 2.4.1
 
 - **New feature**
