@@ -551,6 +551,12 @@ app.on('ready', () => {
     // create a loading windows let user know the app is starting
     _windows.loading = createLoadingWindow();
     _windows.loading.once('show', () => {
+        // TODO: This code should be deleted afterwards
+        // Due to the changes in cache logic updates, before adding the online
+        // library version, clear the cache directly to prevent the old cache
+        // content from interfering with the operation of the new version.
+        desktopLink.clearCache(false);
+
         desktopLink.start();
 
         _windows.main = createMainWindow();
