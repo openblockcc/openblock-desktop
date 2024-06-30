@@ -2,7 +2,7 @@ name: Build Test App
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
     paths-ignore:
       - 'README.md'
       - 'CHANGE.md'
@@ -18,10 +18,11 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: '14.x'
 
       - name: Npm Install
         run: |
+          git config --global url."https://github.com".insteadOf ssh://git@github.com
           npm ci
 
       - name: Build Dist
@@ -48,6 +49,12 @@ jobs:
         with:
           node-version: '16.x'
 
+      - name: Install python2.7
+        run: |
+          brew install pyenv
+          pyenv install 2.7.18
+          pyenv global 2.7.18
+
       - name: Npm Install
         run: |
           pip install setuptools
@@ -59,7 +66,9 @@ jobs:
           NODE_ENV: production
           NODE_OPTIONS: --max_old_space_size=8192
           CSC_IDENTITY_AUTO_DISCOVERY: false
-        run: npm run dist
+        run: |
+          export PYTHON_PATH=$(pyenv root)/shims/python
+          npm run dist
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2

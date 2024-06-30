@@ -67,8 +67,8 @@ const runBuilder = function (wrapperConfig, target) {
             allArgs.push('--c.mac.identity=null');
         }
     }
-    if (wrapperConfig.arch === 'ia32') {
-        allArgs.push('--ia32');
+    if (target.platform === 'win32' && wrapperConfig.mode !== 'dev') {
+        allArgs.push('--ia32', '--x64');
     }
     if (!wrapperConfig.doPackage) {
         allArgs.push('--dir', '--c.compression=store');
