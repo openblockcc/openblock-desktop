@@ -1,5 +1,16 @@
 # Change Log
 
+## 2.5.1
+
+- **New feature**
+
+    1. Re-support windows-ia32 architecture.
+
+- **Fix bug**
+
+    1. When installing on Windows, an error message always appears: The app is running and cannot be closed.
+    2. Running on Windows 7 will report an error and cannot start.
+
 ## 2.5.0
 
 - **New feature**
