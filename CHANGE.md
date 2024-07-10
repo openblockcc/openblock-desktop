@@ -1,5 +1,16 @@
 # Change Log
 
+## 2.5.2
+
+- **New feature**
+
+    1. Supports using environment variables to specify the path of external resources.
+
+- **Fix bug**
+
+    1. Fixed the issue where some window images were lost and could not be displayed.
+    2. Fix the problem that the resources library file cannot be found.
+
 ## 2.5.1
 
 - **New feature**
