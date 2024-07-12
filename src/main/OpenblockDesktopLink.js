@@ -32,7 +32,6 @@ class OpenblockDesktopLink {
         this.dataPath = path.join(userDataPath, 'Data');
 
         this._link = new OpenBlockLink(this.dataPath, path.join(this.appPath, 'tools'));
-        console.log("path.join(this.appPath, 'external-resources'):", path.join(this.appPath, 'external-resources'));
         this._resourceServer = new OpenblockResourceServer(this.dataPath,
             path.join(this.appPath, 'external-resources'),
             app.getLocaleCountryCode());
