@@ -2,7 +2,7 @@ name: Build Test App
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]
     paths-ignore:
       - 'README.md'
       - 'CHANGE.md'
