@@ -31,8 +31,13 @@ class OpenblockDesktopLink {
         );
         this.dataPath = path.join(userDataPath, 'Data');
 
+        const cacheResourcesPath = path.join(this.dataPath, 'external-resources');
+        if (!fs.existsSync(cacheResourcesPath)) {
+            fs.mkdirSync(cacheResourcesPath, {recursive: true});
+        }
+
         this._link = new OpenBlockLink(this.dataPath, path.join(this.appPath, 'tools'));
-        this._resourceServer = new OpenblockResourceServer(this.dataPath,
+        this._resourceServer = new OpenblockResourceServer(cacheResourcesPath,
             path.join(this.appPath, 'external-resources'),
             app.getLocaleCountryCode());
     }

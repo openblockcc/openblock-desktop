@@ -36,7 +36,7 @@
   "dependencies": {
     "bytes": "^3.1.2",
     "openblock-link": "^0.2.0-prerelease.20241216145652",
-    "openblock-resource": "^0.2.0-prerelease.20240708150142",
+    "openblock-resource": "^0.2.0-prerelease.20241218144226",
     "postinstall": "^0.7.4",
     "source-map-support": "^0.5.19"
   },
@@ -61,7 +61,6 @@
     "electron": "^15.3.1",
     "electron-builder": "^22.14.13",
     "electron-devtools-installer": "^3.2.0",
-    "electron-fetch": "^1.7.4",
     "electron-log": "^4.4.6",
     "electron-notarize": "^1.1.1",
     "electron-store": "^8.0.1",

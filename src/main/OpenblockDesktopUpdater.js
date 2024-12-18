@@ -1,9 +1,8 @@
-import {app} from 'electron';
+import {app, dialog} from 'electron';
 import {autoUpdater, CancellationToken} from 'electron-updater';
 import log from 'electron-log';
 import bytes from 'bytes';
 import path from 'path';
-import fetch from 'electron-fetch';
 
 import formatMessage from 'format-message';
 import parseReleaseMessage from 'openblock-parse-release-message';
@@ -42,37 +41,13 @@ class OpenblockDesktopUpdater {
     applicationAvailable (info) {
         this.updateTarget = UPDATE_TARGET.application;
 
-        if (this.isCN) {
-            const url = `https://openblock.sgp1.digitaloceanspaces.com/desktop/latestRelease.json`;
-
-            fetch(url)
-                .then(res => res.json())
-                .then(data => {
-                    this.reportUpdateState({
-                        phase: UPDATE_MODAL_STATE.applicationUpdateAvailable,
-                        info: {
-                            version: info.version,
-                            message: parseReleaseMessage(data.body)
-                        }
-                    });
-                })
-                .catch(err => {
-                    this.reportUpdateState({
-                        phase: UPDATE_MODAL_STATE.error,
-                        info: {
-                            message: err.message
-                        }
-                    });
-                });
-        } else {
-            this.reportUpdateState({
-                phase: UPDATE_MODAL_STATE.applicationUpdateAvailable,
-                info: {
-                    version: info.version,
-                    message: parseReleaseMessage(info.releaseNotes, {html: true})
-                }
-            });
-        }
+        this.reportUpdateState({
+            phase: UPDATE_MODAL_STATE.applicationUpdateAvailable,
+            info: {
+                version: info.version,
+                message: parseReleaseMessage(info.releaseNotes, {html: true})
+            }
+        });
     }
 
     resourceAvailable (info) {
@@ -95,8 +70,8 @@ class OpenblockDesktopUpdater {
             this.removeAllAutoUpdaterListeners();
             this.applicationAvailable(applicationUpdateInfo);
         });
-        autoUpdater.once('update-not-available', () => {
-            this.removeAllAutoUpdaterListeners();
+
+        const resourceServerCheckUpdate = () => {
             this._resourceServer.checkUpdate()
                 .then(resourceUpdateInfo => {
                     if (resourceUpdateInfo.updateble) {
@@ -106,9 +81,19 @@ class OpenblockDesktopUpdater {
                 .catch(err => {
                     console.warn(`Error while checking for resource update: ${err}`);
                 });
+        };
+
+        autoUpdater.once('update-not-available', () => {
+            this.removeAllAutoUpdaterListeners();
+            resourceServerCheckUpdate();
         });
 
-        autoUpdater.checkForUpdates();
+        if (app.getLocaleCountryCode() !== 'CN') { // eslint-disable-line no-negated-condition
+            autoUpdater.checkForUpdates();
+        } else {
+            // Due to widespread network issues in China, the update of the software itself was skipped.
+            resourceServerCheckUpdate();
+        }
     }
 
     reqeustCheckUpdate () {
@@ -122,6 +107,17 @@ class OpenblockDesktopUpdater {
                             id: 'index.internetDisconnectedError',
                             default: 'Internet disconnected, please verify your internet connection and try again.',
                             description: 'Error message of internet disconnected'
+                        })
+                    }
+                });
+            } else if (err.message === 'net::ERR_CONNECTION_TIMED_OUT') {
+                this.reportUpdateState({
+                    phase: UPDATE_MODAL_STATE.error,
+                    info: {
+                        message: formatMessage({
+                            id: 'index.connectionTimeOut',
+                            default: 'Connection timed out. Please check your network status and try again.',
+                            description: 'Error message when the connection times out due to a slow or unresponsive network.' // eslint-disable-line max-len
                         })
                     }
                 });
@@ -139,9 +135,8 @@ class OpenblockDesktopUpdater {
             this.removeAllAutoUpdaterListeners();
             this.applicationAvailable(applicationUpdateInfo);
         });
-        autoUpdater.once('update-not-available', () => {
-            this.removeAllAutoUpdaterListeners();
 
+        const resourceServerCheckUpdate = () => {
             this.abortController = new AbortController();
             this._resourceServer.checkUpdate({signal: this.abortController.signal})
                 .then(resourceUpdateInfo => {
@@ -156,10 +151,26 @@ class OpenblockDesktopUpdater {
                     this.reportUpdateState({phase: 'error', message: err});
                 });
             this.updaterState = UPDATE_MODAL_STATE.checkingResource;
+        };
+
+        autoUpdater.once('update-not-available', () => {
+            this.removeAllAutoUpdaterListeners();
+            resourceServerCheckUpdate();
         });
 
-        autoUpdater.checkForUpdates();
-        this.updaterState = UPDATE_MODAL_STATE.checkingApplication;
+        if (app.getLocaleCountryCode() !== 'CN') { // eslint-disable-line no-negated-condition
+            this.updaterState = UPDATE_MODAL_STATE.checkingApplication;
+        } else {
+            resourceServerCheckUpdate();
+
+            dialog.showMessageBox({
+                type: 'info',
+                // Since China cannot stably connect to the update server, only the update plug-in content will be
+                // checked.If you need to upgrade the software, please go to the official release channel to view
+                // and download the latest version of the installation package.
+                message: `由于中国地区无法稳定的连接到更新服务器，将仅检查更新插件内容。如果需要升级软件本体请前往官方发布渠道查看和下载最新版本的安装包: https://wiki.openblock.cc/install-desktop-version` // eslint-disable-line max-len
+            });
+        }
     }
 
     reqeustUpdate () {
