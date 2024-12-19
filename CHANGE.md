@@ -1,5 +1,20 @@
 # Change Log
 
+## 2.5.3
+
+- **New feature**
+
+    1. Use a separate configuration file to avoid conflicts with Arduino IDE.
+    2. In pure scratch programming state without selecting a device, the signal strength icon is not displayed in the stage bar.
+
+- **Fix bug**
+
+    1. In realtime mode, when no device is connected, after running the program to assign the device block to the custom variable, the saved project will be corrupted and cannot be opened.
+    2. Unsupported script action blocks are not hidden in upload mode.
+    3. An error occurs when opening a project that does not contain hardware and was saved with a version of the software prior to V2.5.0.
+    4. The software cannot get the focus normally after switching windows in Windows system.
+    5. Software update function error.
+
 ## 2.5.2
 
 - **New feature**
@@ -8,8 +23,8 @@
 
 - **Fix bug**
 
-    1. Fixed the issue where some window images were lost and could not be displayed.
-    2. Fix the problem that the resources library file cannot be found.
+    1. Some window images were lost and could not be displayed.
+    2. The resources library file cannot be found.
 
 ## 2.5.1
 
