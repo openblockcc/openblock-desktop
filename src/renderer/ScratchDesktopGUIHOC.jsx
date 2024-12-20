@@ -1,4 +1,4 @@
-import {ipcRenderer} from 'electron';
+import {ipcRenderer, clipboard} from 'electron';
 import {dialog} from '@electron/remote';
 import * as remote from '@electron/remote/renderer';
 import bindAll from 'lodash.bindall';
@@ -87,6 +87,9 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
             ipcRenderer.send('set-locale', this.props.locale);
         }
         componentDidMount () {
+            // replace navigator.clipboard.readText to Electron's clipboard.readText
+            navigator.clipboard.readText = () => Promise.resolve(clipboard.readText());
+
             ipcRenderer.on('setTitleFromSave', this.handleSetTitleFromSave);
             ipcRenderer.on('setUpdate', (event, args) => {
                 this.props.onSetUpdate(args);
