@@ -35,8 +35,22 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: OpenBlock-Desktop-win32
-          path: dist/OpenBlock-Desktop*.exe
+          name: OpenBlock-Desktop-win
+          path: dist/OpenBlock-Desktop*win.exe
+          retention-days: 1
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+            name: OpenBlock-Desktop-win-ia32
+            path: dist/OpenBlock-Desktop*ia32.exe
+            retention-days: 1
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenBlock-Desktop-win-x64
+          path: dist/OpenBlock-Desktop*x64.exe
           retention-days: 1
 
   build-mac:
