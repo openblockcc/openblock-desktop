@@ -14,6 +14,7 @@
     3. An error occurs when opening a project that does not contain hardware and was saved with a version of the software prior to V2.5.0.
     4. The software cannot get the focus normally after switching windows in Windows system.
     5. Software update function error.
+    6. The block pasting function is not available.
 
 ## 2.5.2
 
