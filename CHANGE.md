@@ -5,6 +5,7 @@
 - **Fix bug**
 
     1. Unable to properly load project files containing devices.
+    2. Unable to double-click to open project files containing the device.
 
 ## 2.5.3
 
