@@ -4,7 +4,7 @@
 
 - **Fix bug**
 
-    1. Unable to load the project file with the device normally.
+    1. Unable to properly load project files containing devices.
 
 ## 2.5.3
 
