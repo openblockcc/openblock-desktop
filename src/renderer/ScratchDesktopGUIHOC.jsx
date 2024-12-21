@@ -25,9 +25,11 @@ import {
     openUpdateModal
 } from 'openblock-gui/src/reducers/modals';
 import {setUpdate} from 'openblock-gui/src/reducers/update';
+import {setDeviceData} from 'openblock-gui/src/reducers/device-data';
 
 import analytics, {initialAnalytics} from 'openblock-gui/src/lib/analytics';
 import MessageBoxType from 'openblock-gui/src/lib/message-box.js';
+import {makeDeviceLibrary} from 'openblock-gui/src//lib/libraries/devices/index.jsx';
 
 import ElectronStorageHelper from '../common/ElectronStorageHelper';
 
@@ -50,7 +52,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                 'handleUpdateProjectTitle'
             ]);
             this.props.onLoadingStarted();
-            ipcRenderer.invoke('get-initial-project-data').then(initialProjectData => {
+            ipcRenderer.invoke('get-initial-project-data').then(async initialProjectData => {
                 const hasInitialProject = initialProjectData && (initialProjectData.length > 0);
                 this.props.onHasInitialProject(hasInitialProject, this.props.loadingState);
                 if (!hasInitialProject) {
@@ -58,6 +60,13 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                     ipcRenderer.send('loading-completed');
                     return;
                 }
+                // Update device list
+                await this.props.vm.extensionManager.getDeviceList().then(data => {
+                    this.props.onSetDeviceData(makeDeviceLibrary(data));
+                })
+                    .catch(() => {
+                        this.props.onSetDeviceData(makeDeviceLibrary());
+                    });
                 this.props.vm.loadProject(initialProjectData).then(
                     () => {
                         this.props.onLoadingCompleted();
@@ -239,6 +248,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
         onLoadingStarted: PropTypes.func,
         onRequestNewProject: PropTypes.func,
         onTelemetrySettingsClicked: PropTypes.func,
+        onSetDeviceData: PropTypes.func.isRequired,
         onSetUpdate: PropTypes.func,
         // using PropTypes.instanceOf(VM) here will cause prop type warnings due to VM mismatch
         vm: GUIComponent.WrappedComponent.propTypes.vm
@@ -271,6 +281,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
             return dispatch(onLoadedProject(loadingState, canSaveToServer, loadSuccess));
         },
         onRequestNewProject: () => dispatch(requestNewProject(false)),
+        onSetDeviceData: data => dispatch(setDeviceData(data)),
         onSetUpdate: arg => {
             dispatch(setUpdate(arg));
             dispatch(openUpdateModal());
