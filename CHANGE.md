@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.5.4
+
+- **Fix bug**
+
+    1. Unable to load the project file with the device normally.
+
 ## 2.5.3
 
 - **New feature**
