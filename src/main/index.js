@@ -608,7 +608,6 @@ const initialProjectDataPromise = (async () => {
         log.warn(`Expected 1 command line argument but received ${argv._.length}.`);
     }
     const projectPath = argv._[argv._.length - 1];
-    console.log('projectPath', projectPath);
     try {
         const projectData = await promisify(fs.readFile)(projectPath, null);
         return projectData;
