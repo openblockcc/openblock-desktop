@@ -451,7 +451,7 @@ const createMainWindow = () => {
     });
 
     ipcMain.on('reqeustCheckUpdate', () => {
-        update.reqeustCheckUpdate();
+        update.reqeustCheckUpdate(_windows.main);
     });
 
     ipcMain.on('reqeustUpdate', () => {

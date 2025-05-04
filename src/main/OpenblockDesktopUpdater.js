@@ -1,4 +1,4 @@
-import {app, dialog} from 'electron';
+import {app, dialog, shell} from 'electron';
 import {autoUpdater, CancellationToken} from 'electron-updater';
 import log from 'electron-log';
 import bytes from 'bytes';
@@ -8,6 +8,7 @@ import formatMessage from 'format-message';
 import parseReleaseMessage from 'openblock-parse-release-message';
 import {UPDATE_TARGET, UPDATE_MODAL_STATE} from 'openblock-gui/src/lib/update-state.js';
 import {AbortController} from 'node-abort-controller';
+
 class OpenblockDesktopUpdater {
     constructor (webContents, resourceServer) {
         this._webContents = webContents;
@@ -96,7 +97,7 @@ class OpenblockDesktopUpdater {
         }
     }
 
-    reqeustCheckUpdate () {
+    reqeustCheckUpdate (_windows) {
         autoUpdater.on('error', err => {
             this.removeAllAutoUpdaterListeners();
             if (err.message === 'net::ERR_INTERNET_DISCONNECTED') {
@@ -158,18 +159,52 @@ class OpenblockDesktopUpdater {
             resourceServerCheckUpdate();
         });
 
-        if (app.getLocaleCountryCode() !== 'CN') { // eslint-disable-line no-negated-condition
-            this.updaterState = UPDATE_MODAL_STATE.checkingApplication;
-        } else {
-            resourceServerCheckUpdate();
-
-            dialog.showMessageBox({
-                type: 'info',
-                // Since China cannot stably connect to the update server, only the update plug-in content will be
-                // checked.If you need to upgrade the software, please go to the official release channel to view
-                // and download the latest version of the installation package.
-                message: `由于中国地区无法稳定的连接到更新服务器，将仅检查更新插件内容。如果需要升级软件本体请前往官方发布渠道查看和下载最新版本的安装包: https://wiki.openblock.cc/install-desktop-version` // eslint-disable-line max-len
+        let skipCheckAppUpdates = 0;
+        if (app.getLocaleCountryCode() === 'CN') {
+            const choice = dialog.showMessageBoxSync(_windows, {
+                type: 'question',
+                message: formatMessage({
+                    id: 'index.skipAutoUpdateForMainProgram',
+                    default: 'Skip checking for main program updates?',
+                    description: 'Prompt asking whether to skip update checks for the main program due to network issues.' // eslint-disable-line max-len
+                }),
+                detail: `${formatMessage({
+                    id: 'index.skipAutoUpdateForMainProgramDetail',
+                    default: 'Due to unstable access to the update server in China, it is recommended to skip checking for main program updates. Extension updates will still be checked normally. To update the main program manually, please click "Open Download Page".', // eslint-disable-line max-len
+                    description: 'Explains skipping only applies to the main program, and how to update manually.'
+                })}`,
+                buttons: [
+                    formatMessage({
+                        id: 'index.skipMainUpdate',
+                        default: 'Skip Main Program Update',
+                        description: 'Button to skip main program update'
+                    }),
+                    formatMessage({
+                        id: 'index.continueMainUpdate',
+                        default: 'Continue Main Program Update Check',
+                        description: 'Button to continue checking for main program update'
+                    }),
+                    formatMessage({
+                        id: 'index.openDownloadLink',
+                        default: 'Open Download Page',
+                        description: 'Button to open the software download page'
+                    })
+                ],
+                cancelId: 0,
+                defaultId: 0
             });
+            if (choice === 2) {
+                shell.openExternal('https://wiki.openblock.cc/install-desktop-version');
+            }
+            skipCheckAppUpdates = (choice === 0 || choice === 2);
+        }
+        if (skipCheckAppUpdates) {
+            console.log('resourceServerCheckUpdate');
+            resourceServerCheckUpdate();
+        } else {
+            console.log('checkForUpdates');
+            this.updaterState = UPDATE_MODAL_STATE.checkingApplication;
+            autoUpdater.checkForUpdates();
         }
     }
 
