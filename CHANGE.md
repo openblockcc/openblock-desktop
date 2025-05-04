@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.6.0
+
+- **New feature**
+
+    1. Added new built-in boards: UNOR4, ESP32S3, PRI PICO W, PRI PICO 2, PRI PICO 2 W.
+    2. Allow users in China to choose whether to skip the main program update check.
+
 ## 2.5.4
 
 - **Fix bug**
