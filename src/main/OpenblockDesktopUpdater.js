@@ -117,7 +117,7 @@ class OpenblockDesktopUpdater {
                     info: {
                         message: formatMessage({
                             id: 'index.connectionTimeOut',
-                            default: 'Connection timed out. Please check your network status and try again.',
+                            default: 'Connection timed out, please check your network status and try again.',
                             description: 'Error message when the connection times out due to a slow or unresponsive network.' // eslint-disable-line max-len
                         })
                     }
