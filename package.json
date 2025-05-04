@@ -35,8 +35,8 @@
   },
   "dependencies": {
     "bytes": "^3.1.2",
-    "openblock-link": "^0.2.0-prerelease.20241216145652",
-    "openblock-resource": "^0.2.0-prerelease.20241219104804",
+    "openblock-link": "^0.2.0-prerelease.20250502154003",
+    "openblock-resource": "^0.2.0-prerelease.20250302101433",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
@@ -58,7 +58,7 @@
     "css-loader": "^1.0.1",
     "download-github-release": "^0.3.2",
     "electron": "^15.3.1",
-    "electron-builder": "^22.14.13",
+    "electron-builder": "^26.0.12",
     "electron-devtools-installer": "^3.2.0",
     "electron-log": "^4.4.6",
     "electron-notarize": "^1.1.1",
@@ -82,10 +82,9 @@
     "monaco-editor-webpack-plugin": "^1.7.0",
     "nets": "^3.2.0",
     "node-abort-controller": "^3.0.1",
-    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.5.4",
-    "openblock-l10n": "^3.15.20240704111820",
+    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.6.0",
+    "openblock-l10n": "^3.15.20250502131705",
     "openblock-parse-release-message": "0.0.4",
-    "os-locale": "^5.0.0",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-simple-vars": "^5.0.2",

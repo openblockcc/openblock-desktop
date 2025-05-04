@@ -55,17 +55,19 @@ nsis:
   oneClick: false # allow user to choose per-user or per-machine
   allowToChangeInstallationDirectory: true
   include: buildResources/installer.nsh
+  buildUniversalInstaller: false
 #   license: LICENSE
 
 linux:
   category: Education
   icon: buildResources/linux
   desktop:
-    - Encoding: UTF-8
-    - Name: OpenBlockDesktop
-    - Icon: openblock-desktop
-    - Type: Application
-    - Terminal: false
+    entry:
+      Encoding: UTF-8
+      Name: OpenBlockDesktop
+      Icon: openblock-desktop
+      Type: Application
+      Terminal: false
   target:
     - deb
 
