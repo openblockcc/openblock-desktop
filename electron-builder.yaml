@@ -70,7 +70,6 @@ linux:
       Terminal: false
   target:
     - deb
-
 deb:
   depends: ["libnotify4", "libxtst6", "libnss3"]
-
+  compression: gz
