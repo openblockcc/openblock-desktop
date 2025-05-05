@@ -3,7 +3,7 @@
   "productName": "OpenBlockDesktop",
   "description": "OpenBlock as a self-contained desktop application",
   "author": "Openblock.cc Team <contact@openblock.cc> (http://www.openblock.cc/)",
-  "version": "2.5.4",
+  "version": "2.6.0",
   "license": "MIT",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
