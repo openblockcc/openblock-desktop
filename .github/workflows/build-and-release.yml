@@ -29,6 +29,9 @@ jobs:
           tag_name: ${{ steps.tag.outputs.tag }}
           release_name: OpenBlock Desktop ${{ steps.tag.outputs.tag }}
           body: |
+            **Note**: Due to the large file size of the macOS installer, it can no longer be hosted on GitHub Releases.
+            [⬇️ Download macOS Installer from Google Drive](https://drive.google.com/drive/folders/1Hvx5gQR_7MeoQJ9mmzyrhGUFks1TAFq_?usp=sharing)
+
             ## Change Log (en)
 
             - **New feature**
@@ -78,6 +81,13 @@ jobs:
           NODE_OPTIONS: --max_old_space_size=4096
         run: npm run publish
 
+      - name: Upload a file to Google Drive
+        uses: openblockcc/google-drive-upload-action@v1
+        with:
+          target: dist/OpenBlock-Desktop*.exe
+          credentials: ${{ secrets.DRIVE_CREDENTIALS }}
+          parent_folder_id: 1Hvx5gQR_7MeoQJ9mmzyrhGUFks1TAFq_
+
   build-mac:
     needs: create-release
     runs-on: macos-13
@@ -109,9 +119,17 @@ jobs:
           CSC_IDENTITY_AUTO_DISCOVERY: false
           PYTHON_PATH: python
           USE_HARD_LINKS: false
+        # The installation file is too large to be published in github release
         run: |
           export PYTHON_PATH=$(pyenv root)/shims/python
-          npm run publish
+          npm run dist
+
+      - name: Upload a file to Google Drive
+        uses: openblockcc/google-drive-upload-action@v1
+        with:
+          target: dist/OpenBlock-Desktop*.dmg
+          credentials: ${{ secrets.DRIVE_CREDENTIALS }}
+          parent_folder_id: 1Hvx5gQR_7MeoQJ9mmzyrhGUFks1TAFq_
 
   build-linux:
     needs: create-release
@@ -153,3 +171,10 @@ jobs:
           CSC_IDENTITY_AUTO_DISCOVERY: false
           USE_HARD_LINKS: false
         run: npm run publish
+
+      - name: Upload a file to Google Drive
+        uses: openblockcc/google-drive-upload-action@v1
+        with:
+          target: dist/OpenBlock-Desktop*.deb
+          credentials: ${{ secrets.DRIVE_CREDENTIALS }}
+          parent_folder_id: 1Hvx5gQR_7MeoQJ9mmzyrhGUFks1TAFq_
