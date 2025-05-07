@@ -88,6 +88,14 @@ jobs:
           credentials: ${{ secrets.DRIVE_CREDENTIALS }}
           parent_folder_id: 1Hvx5gQR_7MeoQJ9mmzyrhGUFks1TAFq_
 
+      - name: Upload artifacts to Baidu Netdisk
+        uses: openblockcc/baidu-netdisk-upload-action@v1
+        with:
+          bduss: ${{ secrets.BN_BDUSS }}
+          stoken: ${{ secrets.BN_STOKEN }}
+          target: dist/OpenBlock-Desktop*.exe
+          remote-dir: OpenBlock/OpenBlock Desktop
+
   build-mac:
     needs: create-release
     runs-on: macos-13
@@ -130,6 +138,14 @@ jobs:
           target: dist/OpenBlock-Desktop*.dmg
           credentials: ${{ secrets.DRIVE_CREDENTIALS }}
           parent_folder_id: 1Hvx5gQR_7MeoQJ9mmzyrhGUFks1TAFq_
+
+      - name: Upload artifacts to Baidu Netdisk
+        uses: openblockcc/baidu-netdisk-upload-action@v1
+        with:
+          bduss: ${{ secrets.BN_BDUSS }}
+          stoken: ${{ secrets.BN_STOKEN }}
+          target: dist/OpenBlock-Desktop*.exe
+          remote-dir: OpenBlock/OpenBlock Desktop
 
   build-linux:
     needs: create-release
@@ -178,3 +194,11 @@ jobs:
           target: dist/OpenBlock-Desktop*.deb
           credentials: ${{ secrets.DRIVE_CREDENTIALS }}
           parent_folder_id: 1Hvx5gQR_7MeoQJ9mmzyrhGUFks1TAFq_
+
+      - name: Upload artifacts to Baidu Netdisk
+        uses: openblockcc/baidu-netdisk-upload-action@v1
+        with:
+          bduss: ${{ secrets.BN_BDUSS }}
+          stoken: ${{ secrets.BN_STOKEN }}
+          target: dist/OpenBlock-Desktop*.exe
+          remote-dir: OpenBlock/OpenBlock Desktop
