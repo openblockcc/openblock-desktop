@@ -82,7 +82,7 @@
     "monaco-editor-webpack-plugin": "^1.7.0",
     "nets": "^3.2.0",
     "node-abort-controller": "^3.0.1",
-    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.6.0",
+    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.6.1",
     "openblock-l10n": "^3.15.20250504095837",
     "openblock-parse-release-message": "0.0.4",
     "postcss-import": "^12.0.1",
