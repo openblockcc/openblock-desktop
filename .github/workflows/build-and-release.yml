@@ -124,11 +124,25 @@ jobs:
 
       - name: Compress .dmg files into .7z
         run: |
-            brew install p7zip
             for file in dist/OpenBlock-Desktop*.dmg; do
             [ -f "$file" ] || continue
-            7z a "${file%.dmg}.7z" "$file"
+            7z a \
+                -t7z \
+                -mx=9 \
+                -m0=lzma2 \
+                -mfb=64 \
+                -md=64m \
+                -ms=on \
+                "${file%.dmg}.7z" "$file"
             done
+
+      - name: Upload to Release
+        uses: xresloader/upload-to-github-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: dist/OpenBlock-Desktop*.7z
+          release_id: ${{steps.create_release.outputs.id}}
 
       - name: Upload artifacts to Baidu Netdisk
         uses: openblockcc/baidu-netdisk-upload-action@v1

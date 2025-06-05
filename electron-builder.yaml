@@ -34,7 +34,7 @@ mac:
     # - mas
 dmg:
   title: "OpenBlock-Desktop_${version}"
-  format: UDBZ
+  format: UDRO
 # mas:
 #   category: public.app-category.education
 #   entitlements: buildResources/entitlements.mas.plist
