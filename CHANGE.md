@@ -5,7 +5,7 @@
 - **New feature**
 
     1. Use 7z format to publish the installation package for macos in github release.
-
+    2. No longer publish on Google Drive.
 
 ## 2.6.0
 
