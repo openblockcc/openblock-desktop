@@ -54,6 +54,8 @@ jobs:
                 2. 错误2。
           draft: true
           prerelease: false
+    outputs:
+      release_id: ${{ steps.create_release.outputs.id }}
 
   build-windows:
     needs: create-release
@@ -142,7 +144,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           file: dist/OpenBlock-Desktop*.7z
-          release_id: ${{steps.create_release.outputs.id}}
+          release_id: ${{ needs.create-release.outputs.release_id }}
 
       - name: Upload artifacts to Baidu Netdisk
         uses: openblockcc/baidu-netdisk-upload-action@v1
