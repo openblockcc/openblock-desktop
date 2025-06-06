@@ -89,11 +89,12 @@ class OpenblockDesktopUpdater {
             resourceServerCheckUpdate();
         });
 
-        if (app.getLocaleCountryCode() !== 'CN') { // eslint-disable-line no-negated-condition
-            autoUpdater.checkForUpdates();
-        } else {
-            // Due to widespread network issues in China, the update of the software itself was skipped.
+        if ((app.getLocaleCountryCode() === 'CN') || (process.platform === 'darwin')) {
+            // Due to widespread network issues in China, and the large size of the macOS installer,
+            // we skip checking for application updates and only check for resource updates.
             resourceServerCheckUpdate();
+        } else {
+            autoUpdater.checkForUpdates();
         }
     }
 
@@ -160,43 +161,75 @@ class OpenblockDesktopUpdater {
         });
 
         let skipCheckAppUpdates = 0;
-        if (app.getLocaleCountryCode() === 'CN') {
+
+        const SKIP_MAIN_UPDATE_MESSAGE = formatMessage({
+            id: 'index.skipAutoUpdateForMainProgram',
+            default: 'Skip checking for main program updates?',
+            description: 'Prompt asking whether to skip update checks for the main program due some issues.'
+        });
+        const SKIP_MAIN_UPDATE_DETAIL_CN = formatMessage({
+            id: 'index.skipAutoUpdateForMainProgramDetail',
+            default: 'Due to unstable access to the update server in China, it is recommended to skip checking for main program updates. Extension updates will still be checked normally. To update the main program manually, please click "Open Download Page".', // eslint-disable-line max-len
+            description: 'Explains skipping only applies to the main program, and how to update manually.'
+        });
+        const SKIP_MAIN_UPDATE_DETAIL_MAC = formatMessage({
+            id: 'index.skipAutoUpdateForMainProgramDetailMac',
+            default: 'Due to the large size of the macOS installer, the main program automatic update will be skipped. Extension updates will continue as normal. To update the main program manually, please click "Open Download Page".', // eslint-disable-line max-len
+            description: 'Explain why macOS main program cannot be auto-updated and how to manually download'
+        });
+        const SKIP_MAIN_UPDATE_BUTTON = formatMessage({
+            id: 'index.skipMainUpdate',
+            default: 'Skip Main Program Update',
+            description: 'Button to skip main program update'
+        });
+        const CONTINUE_MAIN_UPDATE_BUTTON = formatMessage({
+            id: 'index.continueMainUpdate',
+            default: 'Continue Main Program Update Check',
+            description: 'Button to continue checking for main program update'
+        });
+        const OPEN_DOWNLOAD_LINK_BUTTON = formatMessage({
+            id: 'index.openDownloadLink',
+            default: 'Open Download Page',
+            description: 'Button to open the software download page'
+        });
+
+        const openDownloadPage = () => {
+            shell.openExternal('https://wiki.openblock.cc/install-desktop-version');
+        };
+
+        if (process.platform === 'darwin') {
             const choice = dialog.showMessageBoxSync(_windows, {
                 type: 'question',
-                message: formatMessage({
-                    id: 'index.skipAutoUpdateForMainProgram',
-                    default: 'Skip checking for main program updates?',
-                    description: 'Prompt asking whether to skip update checks for the main program due to network issues.' // eslint-disable-line max-len
-                }),
-                detail: `${formatMessage({
-                    id: 'index.skipAutoUpdateForMainProgramDetail',
-                    default: 'Due to unstable access to the update server in China, it is recommended to skip checking for main program updates. Extension updates will still be checked normally. To update the main program manually, please click "Open Download Page".', // eslint-disable-line max-len
-                    description: 'Explains skipping only applies to the main program, and how to update manually.'
-                })}`,
+                message: SKIP_MAIN_UPDATE_MESSAGE,
+                detail: SKIP_MAIN_UPDATE_DETAIL_MAC,
                 buttons: [
-                    formatMessage({
-                        id: 'index.skipMainUpdate',
-                        default: 'Skip Main Program Update',
-                        description: 'Button to skip main program update'
-                    }),
-                    formatMessage({
-                        id: 'index.continueMainUpdate',
-                        default: 'Continue Main Program Update Check',
-                        description: 'Button to continue checking for main program update'
-                    }),
-                    formatMessage({
-                        id: 'index.openDownloadLink',
-                        default: 'Open Download Page',
-                        description: 'Button to open the software download page'
-                    })
+                    SKIP_MAIN_UPDATE_BUTTON,
+                    OPEN_DOWNLOAD_LINK_BUTTON
+                ],
+                cancelId: 0,
+                defaultId: 0
+            });
+            if (choice === 1) {
+                openDownloadPage();
+            }
+            skipCheckAppUpdates = true;
+        } else if (app.getLocaleCountryCode() === 'CN') {
+            const choice = dialog.showMessageBoxSync(_windows, {
+                type: 'question',
+                message: SKIP_MAIN_UPDATE_MESSAGE,
+                detail: SKIP_MAIN_UPDATE_DETAIL_CN,
+                buttons: [
+                    SKIP_MAIN_UPDATE_BUTTON,
+                    CONTINUE_MAIN_UPDATE_BUTTON,
+                    OPEN_DOWNLOAD_LINK_BUTTON
                 ],
                 cancelId: 0,
                 defaultId: 0
             });
             if (choice === 2) {
-                shell.openExternal('https://wiki.openblock.cc/install-desktop-version');
+                openDownloadPage();
             }
-            skipCheckAppUpdates = (choice === 0 || choice === 2);
+            skipCheckAppUpdates = (choice !== 1);
         }
         if (skipCheckAppUpdates) {
             console.log('resourceServerCheckUpdate');
