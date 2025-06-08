@@ -2,10 +2,12 @@
 
 ## 2.6.2
 
-- **New feature**
+- **Fix bug**
 
     1. Fixed the compile error of esp32 due to the change of pwm and servo functions after updating arduino core.
     2. Fixed serious errors in esp32s3 control board. Adjusted the pin list and function blocks.
+
+## 2.6.1
 
 - **New feature**
 
