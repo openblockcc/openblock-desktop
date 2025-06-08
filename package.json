@@ -3,7 +3,7 @@
   "productName": "OpenBlockDesktop",
   "description": "OpenBlock as a self-contained desktop application",
   "author": "Openblock.cc Team <contact@openblock.cc> (http://www.openblock.cc/)",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "license": "MIT",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "bytes": "^3.1.2",
-    "openblock-link": "^0.2.0-prerelease.20250502154003",
+    "openblock-link": "^0.2.0-prerelease.20250608112023",
     "openblock-resource": "^0.2.0-prerelease.20250302101433",
     "source-map-support": "^0.5.19"
   },
@@ -82,8 +82,8 @@
     "monaco-editor-webpack-plugin": "^1.7.0",
     "nets": "^3.2.0",
     "node-abort-controller": "^3.0.1",
-    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.6.1",
-    "openblock-l10n": "^3.15.20250606140151",
+    "openblock-gui": "github:openblockcc/openblock-gui#openblock-desktop-v2.6.2",
+    "openblock-l10n": "^3.15.20250608130541",
     "openblock-parse-release-message": "0.0.4",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
