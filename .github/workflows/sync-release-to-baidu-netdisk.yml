@@ -1,0 +1,45 @@
+name: Sync Release to Gitee
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  sync_release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Get release info
+      id: get_release_info
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const response = await github.rest.repos.getReleaseByTag({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            tag: context.payload.release.tag_name
+          });
+          const assets = JSON.stringify(response.data.assets);
+          core.setOutput('assets', assets);
+          core.setOutput('tag_name', response.data.tag_name);
+          core.setOutput('name', response.data.name);
+          core.setOutput('body', response.data.body);
+          return response.data;
+
+    - name: Download release assets
+      run: |
+        assets=$(echo '${{ steps.get_release_info.outputs.assets }}' | jq -r '.[] | .browser_download_url')
+        for url in $assets; do
+          wget -q $url -P ./downloads
+        done
+
+    - name: Upload artifacts to Baidu Netdisk
+      uses: openblockcc/baidu-netdisk-upload-action@v1
+      with:
+        bduss: ${{ secrets.BN_BDUSS }}
+        stoken: ${{ secrets.BN_STOKEN }}
+        target: downloads/OpenBlock-Desktop*
+        remote-dir: OpenBlock/OpenBlock Desktop
