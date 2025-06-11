@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.6.3
+
+- **Fix bug**
+
+    1. Fixed the possible conflict between ESP32x board servo and PWM function.
+
 ## 2.6.2
 
 - **Fix bug**
