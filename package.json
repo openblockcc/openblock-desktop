@@ -36,7 +36,7 @@
   "dependencies": {
     "bytes": "^3.1.2",
     "openblock-link": "^0.2.0-prerelease.20250608112023",
-    "openblock-resource": "^0.2.0-prerelease.20250302101433",
+    "openblock-resource": "^0.2.0-prerelease.20250612121110",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
