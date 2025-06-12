@@ -5,6 +5,7 @@
 - **Fix bug**
 
     1. Fixed the possible conflict between ESP32x board servo and PWM function.
+    2. Change the default pin of esp32 block to io4.
 
 ## 2.6.2
 
@@ -49,7 +50,7 @@
     4. The software cannot get the focus normally after switching windows in Windows system.
     5. Software update function error.
     6. The block pasting function is not available.
-
+git
 ## 2.5.2
 
 - **New feature**
